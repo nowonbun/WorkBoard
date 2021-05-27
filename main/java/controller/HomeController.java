@@ -11,11 +11,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
   @RequestMapping(value = "/index.html")
   public String index(ModelMap modelmap, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
-    return "index";
+    return "Home/index";
   }
 
   @RequestMapping(value = "/login.html")
   public String login(ModelMap modelmap, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
-    return "login";
+    return "Home/login";
+  }
+  @RequestMapping(value = "/register.html")
+  public String register(ModelMap modelmap, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+    return "Home/register";
+  }
+  @RequestMapping(value = "/register-email.html")
+  public String registerEmail(ModelMap modelmap, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+    return "Home/register-email";
   }
 }

@@ -7,6 +7,11 @@
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 	<servlet>
+		<servlet-name>startup</servlet-name>
+		<servlet-class>common.Initialize</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet>
 		<servlet-name>dispatcherServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
