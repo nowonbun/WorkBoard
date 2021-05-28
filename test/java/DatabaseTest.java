@@ -1,7 +1,9 @@
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -26,7 +28,7 @@ public class DatabaseTest {
 
   // @Test
   public void insertStateMaster() throws Throwable {
-    transaction.begin();
+    /*transaction.begin();
     try {
       State state = new State();
       state.setCode("ACTI");
@@ -45,14 +47,17 @@ public class DatabaseTest {
       }
       e.printStackTrace();
       throw e;
-    }
+    }*/
   }
 
   @Test
   public void connectTest() throws Throwable {
     transaction.begin();
     try {
-      Assert.assertTrue("Active".equals(em.find(State.class, "ACTI").getName()));
+      Query query =  em.createNamedQuery("State.findAll");
+      
+      String acti = em.find(State.class, "ACTI").getName();
+      Assert.assertTrue("Active".equals(acti));
       Assert.assertTrue("Deleted".equals(em.find(State.class, "DELE").getName()));
       transaction.commit();
     } catch (Throwable e) {
@@ -66,7 +71,7 @@ public class DatabaseTest {
 
   //@Test
   public void insertUserExample() throws Throwable {
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("WorkBoard");
+    /*EntityManagerFactory emf = Persistence.createEntityManagerFactory("WorkBoard");
     EntityManager em = emf.createEntityManager();
     EntityTransaction transaction = em.getTransaction();
     transaction.begin();
@@ -98,6 +103,6 @@ public class DatabaseTest {
       }
       e.printStackTrace();
       throw e;
-    }
+    }*/
   }
 }

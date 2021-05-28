@@ -1,0 +1,5 @@
+1. Check identity
+2. Remove name of 'Bean' from field name.
+3. @ManyToOne add option of 'fetch = FetchType.EAGER'
+4. @OneToMany add option of 'fetch = FetchType.LAZY, cascade = CascadeType.ALL'
+5. implement change MasterTable of TransactionTable

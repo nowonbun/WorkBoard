@@ -1,18 +1,18 @@
 package model;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import common.TransactionTable;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@NamedQuery(name = "Company.findAll", query = "SELECT c FROM Company c")
-public class Company implements Serializable {
+@NamedQueries(@NamedQuery(name = "Company.findAll", query = "SELECT c FROM Company c"))
+public class Company implements TransactionTable {
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private String code;
+  private int idx;
 
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "create_date")
@@ -24,21 +24,24 @@ public class Company implements Serializable {
 
   private String name;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "state")
   private State state;
 
-  @OneToMany(mappedBy = "company", cascade = CascadeType.PERSIST)
+  @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private List<Registration> registrations;
+
+  @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<User> users;
 
   public Company() {}
 
-  public String getCode() {
-    return this.code;
+  public int getIdx() {
+    return this.idx;
   }
 
-  public void setCode(String code) {
-    this.code = code;
+  public void setIdx(int idx) {
+    this.idx = idx;
   }
 
   public Date getCreateDate() {
@@ -73,6 +76,28 @@ public class Company implements Serializable {
     this.state = state;
   }
 
+  public List<Registration> getRegistrations() {
+    return this.registrations;
+  }
+
+  public void setRegistrations(List<Registration> registrations) {
+    this.registrations = registrations;
+  }
+
+  public Registration addRegistration(Registration registration) {
+    getRegistrations().add(registration);
+    registration.setCompany(this);
+
+    return registration;
+  }
+
+  public Registration removeRegistration(Registration registration) {
+    getRegistrations().remove(registration);
+    registration.setCompany(null);
+
+    return registration;
+  }
+
   public List<User> getUsers() {
     return this.users;
   }
@@ -83,16 +108,15 @@ public class Company implements Serializable {
 
   public User addUser(User user) {
     getUsers().add(user);
-    user.setCompany(this);
+    user.setCompanyBean(this);
 
     return user;
   }
 
   public User removeUser(User user) {
     getUsers().remove(user);
-    user.setCompany(null);
+    user.setCompanyBean(null);
 
     return user;
   }
-
 }

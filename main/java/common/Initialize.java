@@ -17,12 +17,13 @@ public class Initialize extends HttpServlet {
     super.init(config);
     String path = getServletContext().getRealPath("/");
     LocalPaths.getInstance().setWebRootPath(path);
-    /*DEBUG*/
+    /* DEBUG */
     LocalPaths.getInstance().setWebRootPath("d:\\property");
-    /*DEBUG*/
+    /* DEBUG */
     if (logger == null) {
       logger = LoggerManager.getLogger(Initialize.class);
     }
     logger.info("The program is start.");
+    FactoryDao.initializeMaster();
   }
 }

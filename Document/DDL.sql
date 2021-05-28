@@ -1,3 +1,4 @@
+drop database WorkBoard;
 create database WorkBoard;
 use WorkBoard;
 
@@ -10,42 +11,63 @@ create table state(
 	primary key(code)
 );
 
--- insert into state(code, name) values('ACTI', 'Active', 1);
--- insert into state(code, name) values('DELE', 'Deleted', 1);
+-- insert into state(code, name, isactive) values('ACTI', 'Active', 1);
+-- insert into state(code, name, isactive) values('DELE', 'Deleted', 1);
+-- insert into state(code, name, isactive) values('USED', 'Used', 1);
+
 -- drop table company;
 create table company(
-	code char(5) not null,
+	idx int not null auto_increment,
 	name nvarchar(255) not null,
 	state char(4) not null default 'ACTI',
 	create_date datetime not null default now(),
     last_update datetime null,
 	
-	primary key(code),
+	primary key(idx),
 	foreign key (state) references state (code)
 );
 -- drop table user;
 create table user(
+	idx int not null auto_increment,
 	id nvarchar(255) not null,
 	name nvarchar(255) not null,
 	img longblob null,
-	company char(5) not null,
+	company int not null,
 	state char(4) not null default 'ACTI',
 	create_date datetime not null default now(),
     last_update datetime null,
 	
-	primary key (id),
-	foreign key (company) references company (code),
+	primary key (idx),
+	foreign key (company) references company (idx),
 	foreign key (state) references state (code)
 );
 -- drop table password;
 create table password(
     idx int not null auto_increment,
-    id nvarchar(255) not null,
+    user int not null,
     password nvarchar(255) not null,
     state char(4) not null default 'ACTI',
     create_date datetime not null default now(),
+    last_update datetime null,
 
-    primary key (idx, id),
-    foreign key (id) references user(id),
+    primary key (idx),
+    foreign key (user) references user(idx),
     foreign key (state) references state (code)
+);
+
+-- registration
+create table registration(
+	idx int not null auto_increment,
+	email nvarchar(255) not null,
+	uuid nvarchar(255) not null,
+	state char(4) not null default 'ACTI',
+	company int null,
+	user int null,
+	create_date datetime not null default now(),
+    last_update datetime null,
+    
+    primary key (idx),
+    foreign key (state) references state (code),
+    foreign key (user) references user (idx),
+    foreign key (company) references company (idx)
 );

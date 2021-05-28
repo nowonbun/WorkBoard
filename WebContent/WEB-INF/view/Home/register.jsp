@@ -19,7 +19,7 @@
 				<p class="login-box-msg">Confirm your e-mail address and send a registration</p>
 				<form action="register-email.html" method="post">
 					<div class="input-group mb-3">
-						<input type="email" class="form-control" placeholder="Email">
+						<input type="email" class="form-control" placeholder="Email" name="emailAddress">
 						<div class="input-group-append">
 							<div class="input-group-text">
 								<span class="fas fa-envelope"></span>

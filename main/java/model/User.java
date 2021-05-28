@@ -6,17 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
+@NamedQueries(@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"))
 public class User implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private String id;
+  private int idx;
 
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "create_date")
   private Date createDate;
+
+  private String id;
 
   @Lob
   private byte[] img;
@@ -27,25 +29,28 @@ public class User implements Serializable {
 
   private String name;
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
-  private List<Password> passwords;
-
-  @ManyToOne
-  @JoinColumn(name = "company")
-  private Company company;
-
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "state")
   private State state;
 
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private List<Password> passwords;
+
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private List<Registration> registrations;
+
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "company")
+  private Company company;
+
   public User() {}
 
-  public String getId() {
-    return this.id;
+  public int getIdx() {
+    return this.idx;
   }
 
-  public void setId(String id) {
-    this.id = id;
+  public void setIdx(int idx) {
+    this.idx = idx;
   }
 
   public Date getCreateDate() {
@@ -54,6 +59,14 @@ public class User implements Serializable {
 
   public void setCreateDate(Date createDate) {
     this.createDate = createDate;
+  }
+
+  public String getId() {
+    return this.id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   public byte[] getImg() {
@@ -80,6 +93,14 @@ public class User implements Serializable {
     this.name = name;
   }
 
+  public State getStateBean() {
+    return this.state;
+  }
+
+  public void setStateBean(State state) {
+    this.state = state;
+  }
+
   public List<Password> getPasswords() {
     return this.passwords;
   }
@@ -102,20 +123,34 @@ public class User implements Serializable {
     return password;
   }
 
+  public List<Registration> getRegistrations() {
+    return this.registrations;
+  }
+
+  public void setRegistrations(List<Registration> registrations) {
+    this.registrations = registrations;
+  }
+
+  public Registration addRegistration(Registration registration) {
+    getRegistrations().add(registration);
+    registration.setUser(this);
+
+    return registration;
+  }
+
+  public Registration removeRegistration(Registration registration) {
+    getRegistrations().remove(registration);
+    registration.setUser(null);
+
+    return registration;
+  }
+
   public Company getCompany() {
     return this.company;
   }
 
-  public void setCompany(Company company) {
+  public void setCompanyBean(Company company) {
     this.company = company;
-  }
-
-  public State getState() {
-    return this.state;
-  }
-
-  public void setState(State state) {
-    this.state = state;
   }
 
 }
