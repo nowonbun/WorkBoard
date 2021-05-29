@@ -22,8 +22,8 @@ create table type(
 	
 	primary key(code)
 );
--- insert into state(code, name, isactive) values('REGI', 'Registraion', 1);
--- insert into state(code, name, isactive) values('PSSW', 'Password', 1);
+-- insert into type(code, name, isactive) values('REGI', 'Registration', 1);
+-- insert into type(code, name, isactive) values('PSSW', 'Password', 1);
 
 -- drop table company;
 create table company(

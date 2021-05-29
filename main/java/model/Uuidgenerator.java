@@ -7,7 +7,7 @@ import java.util.Date;
 @Entity
 @NamedQueries({
   @NamedQuery(name = "Uuidgenerator.findAll", query = "SELECT u FROM Uuidgenerator u"),
-  @NamedQuery(name = "Uuidgenerator.findByEmail", query = "SELECT u FROM Uuidgenerator u where u.email=:email and u.state!=:state")
+  @NamedQuery(name = "Uuidgenerator.findByEmail", query = "SELECT u FROM Uuidgenerator u where u.email=:email and u.state=:state and u.type=:type")
 })
 
 public class Uuidgenerator implements Serializable {

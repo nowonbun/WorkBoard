@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 import dao.StateDao;
+import dao.TypeDao;
 
 public class FactoryDao {
   private static FactoryDao instance = null;
@@ -31,6 +32,7 @@ public class FactoryDao {
 
   public static void initializeMaster() {
     FactoryDao.getDao(StateDao.class).clear();
+    FactoryDao.getDao(TypeDao.class).clear();
   }
 
   public static void resetMaster() {
