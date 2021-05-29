@@ -5,22 +5,22 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import common.AbstractDao;
 import common.FactoryDao;
-import model.Registration;
+import model.Uuidgenerator;
 
-public class RegistrationDao extends AbstractDao<Registration> {
+public class RegistrationDao extends AbstractDao<Uuidgenerator> {
 
   protected RegistrationDao() {
-    super(Registration.class);
+    super(Uuidgenerator.class);
   }
 
   @SuppressWarnings("unchecked")
-  public List<Registration> findByEmail(String email) {
+  public List<Uuidgenerator> findByEmail(String email) {
     return transaction((em) -> {
       try {
-        Query query = em.createNamedQuery("Registration.findByEmail", Registration.class);
+        Query query = em.createNamedQuery("Registration.findByEmail", Uuidgenerator.class);
         query.setParameter("email", email);
         query.setParameter("state", FactoryDao.getDao(StateDao.class).DELETE);
-        return (List<Registration>) query.getResultList();
+        return (List<Uuidgenerator>) query.getResultList();
       } catch (NoResultException e) {
         return null;
       }

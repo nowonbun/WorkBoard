@@ -29,9 +29,6 @@ public class Company implements TransactionTable {
   private State state;
 
   @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  private List<Registration> registrations;
-
-  @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<User> users;
 
   public Company() {}
@@ -74,28 +71,6 @@ public class Company implements TransactionTable {
 
   public void setState(State state) {
     this.state = state;
-  }
-
-  public List<Registration> getRegistrations() {
-    return this.registrations;
-  }
-
-  public void setRegistrations(List<Registration> registrations) {
-    this.registrations = registrations;
-  }
-
-  public Registration addRegistration(Registration registration) {
-    getRegistrations().add(registration);
-    registration.setCompany(this);
-
-    return registration;
-  }
-
-  public Registration removeRegistration(Registration registration) {
-    getRegistrations().remove(registration);
-    registration.setCompany(null);
-
-    return registration;
   }
 
   public List<User> getUsers() {

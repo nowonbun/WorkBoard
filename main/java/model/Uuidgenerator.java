@@ -6,11 +6,11 @@ import java.util.Date;
 
 @Entity
 @NamedQueries({
-  @NamedQuery(name = "Registration.findAll", query = "SELECT r FROM Registration r"),
-  @NamedQuery(name = "Registration.findByEmail", query = "SELECT r FROM Registration r where r.email=:email and r.state!=:state")
+  @NamedQuery(name = "Uuidgenerator.findAll", query = "SELECT u FROM Uuidgenerator u"),
+  @NamedQuery(name = "Uuidgenerator.findByEmail", query = "SELECT u FROM Uuidgenerator u where u.email=:email and u.state!=:state")
 })
 
-public class Registration implements Serializable {
+public class Uuidgenerator implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
@@ -34,14 +34,10 @@ public class Registration implements Serializable {
   private State state;
 
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "user")
-  private User user;
+  @JoinColumn(name = "type")
+  private Type type;
 
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "company")
-  private Company company;
-
-  public Registration() {}
+  public Uuidgenerator() {}
 
   public int getIdx() {
     return this.idx;
@@ -91,20 +87,12 @@ public class Registration implements Serializable {
     this.state = state;
   }
 
-  public User getUser() {
-    return this.user;
+  public Type getType() {
+    return this.type;
   }
 
-  public void setUser(User user) {
-    this.user = user;
-  }
-
-  public Company getCompany() {
-    return this.company;
-  }
-
-  public void setCompany(Company company) {
-    this.company = company;
+  public void setType(Type type) {
+    this.type = type;
   }
 
 }

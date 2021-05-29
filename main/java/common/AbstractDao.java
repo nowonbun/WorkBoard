@@ -8,7 +8,7 @@ import javax.persistence.Persistence;
 
 public abstract class AbstractDao<T extends Serializable> {
 
-  private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("nowonbunBlogEditor");
+  private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("WorkBoard");
   private Class<T> clazz;
 
   protected AbstractDao(Class<T> clazz) {

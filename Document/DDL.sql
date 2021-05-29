@@ -15,6 +15,16 @@ create table state(
 -- insert into state(code, name, isactive) values('DELE', 'Deleted', 1);
 -- insert into state(code, name, isactive) values('USED', 'Used', 1);
 
+create table type(
+	code char(4) not null,
+	name nvarchar(255) not null,
+	isactive bit not null default 1,
+	
+	primary key(code)
+);
+-- insert into state(code, name, isactive) values('REGI', 'Registraion', 1);
+-- insert into state(code, name, isactive) values('PSSW', 'Password', 1);
+
 -- drop table company;
 create table company(
 	idx int not null auto_increment,
@@ -55,19 +65,17 @@ create table password(
     foreign key (state) references state (code)
 );
 
--- registration
-create table registration(
+-- uuidGenerator
+create table uuidGenerator(
 	idx int not null auto_increment,
 	email nvarchar(255) not null,
 	uuid nvarchar(255) not null,
 	state char(4) not null default 'ACTI',
-	company int null,
-	user int null,
+	type  char(4) not null,
 	create_date datetime not null default now(),
     last_update datetime null,
     
     primary key (idx),
     foreign key (state) references state (code),
-    foreign key (user) references user (idx),
-    foreign key (company) references company (idx)
+    foreign key (type) references type (code)
 );

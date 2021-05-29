@@ -6,14 +6,15 @@
 		<class>model.PasswordPK</class>
 		<class>model.State</class>
 		<class>model.User</class>
-		<class>model.Registration</class>
+		<class>model.Uuidgenerator</class>
+		<class>model.Type</class>
 		<properties>
 			<property name="eclipselink.query-results-cache" value="false" />
 			<property name="eclipselink.logging.level" value="INFO" />
 			<property name="eclipselink.logging.parameters" value="true" />
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/WorkBoard" />
-			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.user" value="test" />
 			<property name="javax.persistence.jdbc.password" value="a12345" />
 		</properties>
 	</persistence-unit>

@@ -36,9 +36,6 @@ public class User implements Serializable {
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<Password> passwords;
 
-  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  private List<Registration> registrations;
-
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "company")
   private Company company;
@@ -121,28 +118,6 @@ public class User implements Serializable {
     password.setUser(null);
 
     return password;
-  }
-
-  public List<Registration> getRegistrations() {
-    return this.registrations;
-  }
-
-  public void setRegistrations(List<Registration> registrations) {
-    this.registrations = registrations;
-  }
-
-  public Registration addRegistration(Registration registration) {
-    getRegistrations().add(registration);
-    registration.setUser(this);
-
-    return registration;
-  }
-
-  public Registration removeRegistration(Registration registration) {
-    getRegistrations().remove(registration);
-    registration.setUser(null);
-
-    return registration;
   }
 
   public Company getCompany() {

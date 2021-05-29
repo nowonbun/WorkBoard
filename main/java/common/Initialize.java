@@ -18,7 +18,7 @@ public class Initialize extends HttpServlet {
     String path = getServletContext().getRealPath("/");
     LocalPaths.getInstance().setWebRootPath(path);
     /* DEBUG */
-    LocalPaths.getInstance().setWebRootPath("d:\\property");
+    LocalPaths.getInstance().setWebRootPath("/home/sy/Desktop");
     /* DEBUG */
     if (logger == null) {
       logger = LoggerManager.getLogger(Initialize.class);

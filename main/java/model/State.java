@@ -31,7 +31,7 @@ public class State implements MasterTable, Serializable {
   private List<User> users;
 
   @OneToMany(mappedBy = "state", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  private List<Registration> registrations;
+  private List<Uuidgenerator> registrations;
 
   public State() {}
 
@@ -125,22 +125,22 @@ public class State implements MasterTable, Serializable {
     return user;
   }
 
-  public List<Registration> getRegistrations() {
+  public List<Uuidgenerator> getRegistrations() {
     return this.registrations;
   }
 
-  public void setRegistrations(List<Registration> registrations) {
+  public void setRegistrations(List<Uuidgenerator> registrations) {
     this.registrations = registrations;
   }
 
-  public Registration addRegistration(Registration registration) {
+  public Uuidgenerator addRegistration(Uuidgenerator registration) {
     getRegistrations().add(registration);
     registration.setState(this);
 
     return registration;
   }
 
-  public Registration removeRegistration(Registration registration) {
+  public Uuidgenerator removeRegistration(Uuidgenerator registration) {
     getRegistrations().remove(registration);
     registration.setState(null);
 
