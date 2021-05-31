@@ -56,9 +56,16 @@ public class MailManager {
 
   public void setAddress(String from, String to, String cc, String bcc) throws AddressException, MessagingException {
     message.setFrom(getAddress(from));
-    message.addRecipients(Message.RecipientType.TO, getAddresses(to));
-    message.addRecipients(Message.RecipientType.CC, getAddresses(cc));
-    message.addRecipients(Message.RecipientType.BCC, getAddresses(bcc));
+    Address[] addresses;
+    if ((addresses = getAddresses(to)) != null) {
+      message.addRecipients(Message.RecipientType.TO, addresses);
+    }
+    if ((addresses = getAddresses(cc)) != null) {
+      message.addRecipients(Message.RecipientType.CC, addresses);
+    }
+    if ((addresses = getAddresses(bcc)) != null) {
+      message.addRecipients(Message.RecipientType.BCC, addresses);
+    }
   }
 
   public void setSubject(String title) throws MessagingException {
@@ -102,6 +109,9 @@ public class MailManager {
    * @throws AddressException
    */
   private Address[] getAddresses(String addresses) throws AddressException {
+    if (addresses == null) {
+      return null;
+    }
     String[] array = addresses.split(",");
     Address[] ret = new Address[array.length];
     for (int i = 0; i < ret.length; i++) {
