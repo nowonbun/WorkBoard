@@ -8,7 +8,7 @@ import common.FactoryDao;
 import common.Util;
 import model.Uuidgenerator;
 
-//@SuppressWarnings("unchecked")
+// @SuppressWarnings("unchecked")
 public class UuidgeneratorDao extends AbstractDao<Uuidgenerator> {
 
   protected UuidgeneratorDao() {
@@ -33,6 +33,21 @@ public class UuidgeneratorDao extends AbstractDao<Uuidgenerator> {
         uuid.setCreateDate(new Date());
         super.update(uuid);
         return uuid;
+      }
+    });
+  }
+
+  public boolean isHave(String email, String uuid) {
+    return transaction((em) -> {
+      try {
+        Query query = em.createNamedQuery("Uuidgenerator.isHave", Uuidgenerator.class);
+        query.setParameter("email", email);
+        query.setParameter("uuid", uuid);
+        query.setParameter("state", FactoryDao.getDao(StateDao.class).Active());
+        query.setParameter("type", FactoryDao.getDao(TypeDao.class).Registraion());
+        return query.getSingleResult() != null;
+      } catch (NoResultException e) {
+        return false;
       }
     });
   }

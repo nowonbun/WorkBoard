@@ -8,9 +8,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import common.AbstractController;
 import common.AllocDao;
+import common.FactoryDao;
 import common.LocalPaths;
 import common.MailManager;
 import common.PropertyMap;
@@ -60,9 +62,9 @@ public class HomeController extends AbstractController {
           try (FileInputStream stream = new FileInputStream(LocalPaths.getMailTempaltePath() + File.separator + "registration.html")) {
             byte[] data = stream.readAllBytes();
             String contents = new String(data, "UTF-8");
-            String url = PropertyMap.getInstance().getProperty("config", "host_address") + "join.html?email=" + uuid.getEmail() + "&key = " + uuid.getUuid();
-            contents.replaceAll("#####HOME#####", PropertyMap.getInstance().getProperty("config", "host_address") + "login.html");
-            contents.replaceAll("#####URL#####", url);
+            String url = PropertyMap.getInstance().getProperty("config", "host_address") + "join.html?email=" + uuid.getEmail() + "&key=" + uuid.getUuid();
+            contents = contents.replace("#####HOME#####", PropertyMap.getInstance().getProperty("config", "host_address") + "login.html");
+            contents = contents.replace("#####URL#####", url);
             mail.setContent(contents);
           }
         } else {
@@ -74,5 +76,23 @@ public class HomeController extends AbstractController {
       }
     }).start();
     return "Home/register-email";
+  }
+
+  @RequestMapping(value = "/join.html", method = RequestMethod.GET)
+  public String join(ModelMap modelmap, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+    String email = req.getParameter("email");
+    String key = req.getParameter("key");
+    if (email != null && key != null && FactoryDao.getDao(UuidgeneratorDao.class).isHave(email, key)) {
+      modelmap.addAttribute("email", email);
+      modelmap.addAttribute("key", key);
+      return "Home/join";
+    }
+    return "Home/register";
+  }
+
+  @RequestMapping(value = "/join.html", method = RequestMethod.POST)
+  public String signup(ModelMap modelmap, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+
+    return "Home/join";
   }
 }
