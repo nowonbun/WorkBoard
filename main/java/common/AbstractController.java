@@ -27,4 +27,8 @@ public class AbstractController {
     }
     return logger;
   }
+
+  protected String redirect(String url) {
+    return "redirect:" + url;
+  }
 }

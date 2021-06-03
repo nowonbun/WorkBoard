@@ -18,10 +18,12 @@
 			</div>
 			<div class="card-body">
 				<p class="login-box-msg">Register a new membership</p>
+				<span class="error-message" style="color: red;"></span>
 				<form method="post">
 					<div class="input-group mb-3">
-						<input type="hidden" name="email" value="${email}">
+						<input type="hidden" name="email" value="${email}"> 
 						<input type="hidden" name="key" value="${key}"> 
+						<input type="hidden" name="type" value="${type}"> 
 						<input type="email" class="form-control" placeholder="Email" readonly="readonly" disabled="disabled" value="${email}">
 						<div class="input-group-append">
 							<div class="input-group-text">
@@ -30,15 +32,15 @@
 						</div>
 					</div>
 					<div class="input-group mb-3">
-						<input type="text" class="form-control" placeholder="Company name">
+						<input type="text" class="form-control" name="companyName" placeholder="Company name">
 						<div class="input-group-append">
 							<div class="input-group-text">
-								<span class="fas fa-user"></span>
+								<span class="fas fa-building"></span>
 							</div>
 						</div>
 					</div>
 					<div class="input-group mb-3">
-						<input type="password" class="form-control" placeholder="Password">
+						<input type="password" class="form-control" name="password" placeholder="Password">
 						<div class="input-group-append">
 							<div class="input-group-text">
 								<span class="fas fa-lock"></span>
@@ -73,5 +75,63 @@
 	<script src="//cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 	<script src="//cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/js/adminlte.min.js"></script>
+	<script>
+		$(function() {
+			(function() {
+				function isNullAndWhitespace(val) {
+					if (val === null || $.trim(val) === "") {
+						return true;
+					}
+					return false;
+				}
+				function addError(message) {
+					if (!isNullAndWhitespace($(".error-message").html())) {
+						$(".error-message").html($(".error-message").html() + "<br />");
+					}
+					$(".error-message").html($(".error-message").html() + message);
+				}
+				$("form").on("submit", function() {
+					$(".error-message").html("");
+					let email = $("[name=email]").val();
+					let key = $("[name=key]").val();
+					let type = $("[name=type]").val();
+					if (isNullAndWhitespace(email) || isNullAndWhitespace(key) || isNullAndWhitespace(type)) {
+						location.href = "register.html";
+						return false;
+					}
+					let submit = true;
+					if (isNullAndWhitespace($("[name=companyName]").val())) {
+						addError("Please input company name.");
+						submit = false;
+					}
+					let check = true;
+					let password = [];
+					$("[type=password]").each(function() {
+						if (isNullAndWhitespace($(this).val())) {
+							if(check){
+								addError("Please input password or Retype password.");
+								check = false;
+							}
+							submit = false;
+							return;
+						}
+						password.push($(this).val());
+					});
+					if (!$("#agreeTerms").prop("checked")) {
+						addError("Please check terms.");
+						submit = false;
+					}
+					if (!submit) {
+						return false;
+					}
+					if (password[0] !== password[1]) {
+						addError("Please input same password and Retype password.");
+						return false;
+					}
+				});
+
+			})();
+		})
+	</script>
 </body>
 </html>

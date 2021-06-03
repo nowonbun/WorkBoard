@@ -18,6 +18,7 @@
 			</div>
 			<div class="card-body">
 				<p class="login-box-msg">Confirm your e-mail address and send a registration</p>
+				<span class="error-message" style="color: red;"></span>
 				<form action="register-email.html" method="post">
 					<div class="input-group mb-3">
 						<input type="email" class="form-control" placeholder="Email" name="emailAddress">
@@ -43,5 +44,18 @@
 	<script src="//cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 	<script src="//cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/js/adminlte.min.js"></script>
+	<script>
+		$(function() {
+			(function() {
+				$("form").on("submit", function() {
+					let val = $("[name=emailAddress]").val();
+					if (val === null || $.trim(val) === "") {
+						$(".error-message").html("Please input email address.");
+						return false;
+					}
+				});
+			})();
+		})
+	</script>
 </body>
 </html>

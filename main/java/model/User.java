@@ -7,8 +7,8 @@ import java.util.List;
 
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
-    @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id=:id AND u.state=:state")
+  @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"), 
+  @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id=:id AND u.state=:state")
 })
 public class User implements Serializable {
   private static final long serialVersionUID = 1L;
@@ -42,6 +42,8 @@ public class User implements Serializable {
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "company")
   private Company company;
+
+  private boolean isAdmin;
 
   public User() {}
 
@@ -131,4 +133,11 @@ public class User implements Serializable {
     this.company = company;
   }
 
+  public boolean isAdmin() {
+    return isAdmin;
+  }
+
+  public void setAdmin(boolean isAdmin) {
+    this.isAdmin = isAdmin;
+  }
 }

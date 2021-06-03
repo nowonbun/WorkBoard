@@ -47,6 +47,7 @@ public class MailManager {
     });
     String debug = PropertyMap.getInstance().getProperty("config", "mail_debug");
     if (debug != null && "true".equals(debug.toLowerCase())) {
+      LoggerManager.getLogger(MailManager.class).debug("The mail setting is Debug mode");
       session.setDebug(true);
     }
     message = new MimeMessage(session);
@@ -56,44 +57,55 @@ public class MailManager {
 
   public void setAddress(String from, String to, String cc, String bcc) throws AddressException, MessagingException {
     message.setFrom(getAddress(from));
+    LoggerManager.getLogger(MailManager.class).debug("The mail address from - " + from);
     Address[] addresses;
     if ((addresses = getAddresses(to)) != null) {
+      LoggerManager.getLogger(MailManager.class).debug("The mail address to - " + to);
       message.addRecipients(Message.RecipientType.TO, addresses);
     }
     if ((addresses = getAddresses(cc)) != null) {
+      LoggerManager.getLogger(MailManager.class).debug("The mail address cc - " + cc);
       message.addRecipients(Message.RecipientType.CC, addresses);
     }
     if ((addresses = getAddresses(bcc)) != null) {
+      LoggerManager.getLogger(MailManager.class).debug("The mail address bcc - " + bcc);
       message.addRecipients(Message.RecipientType.BCC, addresses);
     }
   }
 
   public void setSubject(String title) throws MessagingException {
+    LoggerManager.getLogger(MailManager.class).debug("The mail title - " + title);
     message.setSubject(title);
   }
 
   public void setContent(String html) throws MessagingException {
+    LoggerManager.getLogger(MailManager.class).debug("The mail content - " + html);
     mp.addBodyPart(getContents(html));
   }
 
   public void setAttachment(String path) throws MessagingException {
+    LoggerManager.getLogger(MailManager.class).debug("The mail attachment path - " + path);
     mp.addBodyPart(getFileAttachment(path));
   }
 
   // it need Test
   public void setAttachment(String fileName, String mimeType, byte[] data) throws MessagingException {
+    LoggerManager.getLogger(MailManager.class).debug("The mail attachment filename - " + fileName);
     mp.addBodyPart(geteAttachment(fileName, mimeType, data));
   }
 
   public void setImage(String path, String cid) throws MessagingException {
+    LoggerManager.getLogger(MailManager.class).debug("The mail image name - " + path + " cid - " + cid);
     mp.addBodyPart(getImage(path, cid));
   }
 
   public void setImage(String fileName, String mimeType, byte[] data, String cid) throws MessagingException {
+    LoggerManager.getLogger(MailManager.class).debug("The mail image filename - " + fileName + " cid - " + cid + " mimeType - " + mimeType);
     mp.addBodyPart(getImage(fileName, mimeType, data, cid));
   }
 
   public void sendMail() throws MessagingException {
+    LoggerManager.getLogger(MailManager.class).debug("The mail is sent");
     Transport.send(message);
   }
 

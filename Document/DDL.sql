@@ -44,6 +44,7 @@ create table user(
 	img longblob null,
 	company int not null,
 	state char(4) not null default 'ACTI',
+	isAdmin bit not null,
 	create_date datetime not null default now(),
     last_update datetime null,
 	
