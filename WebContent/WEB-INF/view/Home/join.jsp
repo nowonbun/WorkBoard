@@ -19,7 +19,7 @@
 			<div class="card-body">
 				<p class="login-box-msg">Register a new membership</p>
 				<span class="error-message" style="color: red;"></span>
-				<form method="post">
+				<form action="join.html" method="post">
 					<div class="input-group mb-3">
 						<input type="hidden" name="email" value="${email}"> 
 						<input type="hidden" name="key" value="${key}"> 
