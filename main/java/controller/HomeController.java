@@ -2,9 +2,12 @@ package controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,14 +15,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import bean.JoinBean;
 import common.AbstractController;
-import common.AllocDao;
-import common.FactoryDao;
 import common.LocalPaths;
 import common.MailManager;
 import common.PropertyMap;
 import common.Util;
+import dao.CompanyDao;
+import dao.StateDao;
 import dao.UserDao;
 import dao.UuidgeneratorDao;
+import model.Company;
 import model.User;
 import model.Uuidgenerator;
 
@@ -30,11 +34,21 @@ public class HomeController extends AbstractController {
     super();
   }
 
-  @AllocDao
+  @Autowired
+  @Qualifier("UserDao")
   private UserDao userDao;
 
-  @AllocDao
+  @Autowired
+  @Qualifier("UuidgeneratorDao")
   private UuidgeneratorDao registrationDao;
+  
+  @Autowired
+  @Qualifier("CompanyDao")
+  private CompanyDao companyDao;
+  
+  @Autowired
+  @Qualifier("StateDao")
+  private StateDao stateDao;
 
   @RequestMapping(value = "/index.html")
   public String index(ModelMap modelmap, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
@@ -91,16 +105,7 @@ public class HomeController extends AbstractController {
 
   @RequestMapping(value = "/join.html", method = RequestMethod.GET)
   public String joinAdmin(@ModelAttribute JoinBean join, ModelMap modelmap, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
-    if (Util.isNullAndWhiteSpace(join.getEmail())) {
-      super.getLogger().info("Invalid connection path. The email is null.");
-      return "Home/register";
-    }
-    if (Util.isNullAndWhiteSpace(join.getKey())) {
-      super.getLogger().info("Invalid connection path. The key is null.");
-      return "Home/register";
-    }
-    if (!FactoryDao.getDao(UuidgeneratorDao.class).isHave(join.getEmail(), join.getKey())) {
-      super.getLogger().info("Invalid connection path. This key was not applied.");
+    if (!validateJoinEntity1(join, false)) {
       return "Home/register";
     }
     super.getLogger().info("connection path. email = " + join.getEmail() + " key = " + join.getKey());
@@ -112,44 +117,60 @@ public class HomeController extends AbstractController {
 
   @RequestMapping(value = "/join.html", method = RequestMethod.POST)
   public String signup(@ModelAttribute JoinBean join, ModelMap modelmap, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
-    if (Util.isNullAndWhiteSpace(join.getEmail())) {
-      super.getLogger().info("Invalid connection path. The email is null.");
+    if (!validateJoinEntity1(join, true)) {
       return redirect("login.html");
     }
-    if (Util.isNullAndWhiteSpace(join.getKey())) {
-      super.getLogger().info("Invalid connection path. The email is null.");
-      return redirect("login.html");
-    }
-    if (Util.isNullAndWhiteSpace(join.getType())) {
-      super.getLogger().info("Invalid connection path. The type is null.");
-      return redirect("login.html");
-    }
-    if (!FactoryDao.getDao(UuidgeneratorDao.class).isHave(join.getEmail(), join.getKey())) {
-      super.getLogger().info("Invalid connection path. This key was not applied.");
-      return redirect("login.html");
-    }
-    if (Util.isNullAndWhiteSpace(join.getCompanyName())) {
-      super.getLogger().info("Invalid connection path. The company name is null.");
+    if(!validateJoinEntity2(join)) {
       modelmap.addAttribute("email", join.getEmail());
       modelmap.addAttribute("key", join.getKey());
       modelmap.addAttribute("type", join.getType());
       return "Home/join";
+    }
+    Company company = new Company();
+    company.setName(join.getCompanyName());
+    company.setState(stateDao.Active());
+    company.setCreateDate(new Date());
+    
+    
+    // Sign up
+    return redirect("login.html");
+  }
+
+  private boolean validateJoinEntity1(JoinBean join, boolean checkType) {
+    if (Util.isNullAndWhiteSpace(join.getEmail())) {
+      super.getLogger().info("Invalid connection path. The email is null.");
+      return false;
+    }
+    if (Util.isNullAndWhiteSpace(join.getKey())) {
+      super.getLogger().info("Invalid connection path. The key is null.");
+      return false;
+    }
+    if (!registrationDao.isHave(join.getEmail(), join.getKey())) {
+      super.getLogger().info("Invalid connection path. This key was not applied.");
+      return false;
+    }
+    if (checkType) {
+      if (Util.isNullAndWhiteSpace(join.getType())) {
+        super.getLogger().info("Invalid connection path. The type is null.");
+        return false;
+      }
+    }
+    return true;
+  }
+  
+  private boolean validateJoinEntity2(JoinBean join) {
+    if (Util.isNullAndWhiteSpace(join.getCompanyName())) {
+      super.getLogger().info("Invalid connection path. The company name is null.");
+      return false;
     }
     if (Util.isNullAndWhiteSpace(join.getPassword())) {
       super.getLogger().info("Invalid connection path. The password is null.");
-      modelmap.addAttribute("email", join.getEmail());
-      modelmap.addAttribute("key", join.getKey());
-      modelmap.addAttribute("type", join.getType());
-      return "Home/join";
+      return false;
     }
     if (Util.isNullAndWhiteSpace(join.getTerms())) {
       super.getLogger().info("Invalid connection path. The terms is null.");
-      modelmap.addAttribute("email", join.getEmail());
-      modelmap.addAttribute("key", join.getKey());
-      modelmap.addAttribute("type", join.getType());
-      return "Home/join";
+      return false;
     }
-    // Sign up
-    return redirect("login.html");
+    return true;
   }
 }

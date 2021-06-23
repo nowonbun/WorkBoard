@@ -1,6 +1,8 @@
 package dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import common.AbstractDao;
@@ -8,21 +10,28 @@ import model.State;
 
 public class StateDao extends AbstractDao<State> {
 
-  private List<State> list = null;
+  private Map<String, State> map = null;
   public final String ACTIVE = "ACTI";
   public final String DELETE = "DELE";
   public final String USED = "USED";
 
   protected StateDao() {
     super(State.class);
+    if(map == null) {
+      clear();
+    }
   }
 
   @SuppressWarnings("unchecked")
   public void clear() {
-    this.list = transaction((em) -> {
+    this.map = transaction((em) -> {
       try {
         Query query = em.createNamedQuery("State.findActiveAll", State.class);
-        return (List<State>) query.getResultList();
+        Map<String, State> ret = new HashMap<>();
+        ((List<State>) query.getResultList()).forEach(x -> {
+          ret.put(x.getCode(), x);
+        });
+        return ret;
       } catch (NoResultException e) {
         return null;
       }
@@ -30,14 +39,14 @@ public class StateDao extends AbstractDao<State> {
   }
 
   public State Active() {
-    return this.list.stream().filter(x -> ACTIVE.equals(x.getCode())).findFirst().get();
+    return map.get(ACTIVE);
   }
 
   public State Delete() {
-    return this.list.stream().filter(x -> DELETE.equals(x.getCode())).findFirst().get();
+    return map.get(DELETE);
   }
 
   public State Used() {
-    return this.list.stream().filter(x -> USED.equals(x.getCode())).findFirst().get();
+    return map.get(USED);
   }
 }

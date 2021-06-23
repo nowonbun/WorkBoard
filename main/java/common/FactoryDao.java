@@ -31,8 +31,8 @@ public class FactoryDao {
   }
 
   public static void initializeMaster() {
-    FactoryDao.getDao(StateDao.class).clear();
-    FactoryDao.getDao(TypeDao.class).clear();
+    FactoryDao.getDao(StateDao.class);
+    FactoryDao.getDao(TypeDao.class);
   }
 
   public static void resetMaster() {
