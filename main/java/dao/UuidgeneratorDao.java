@@ -1,14 +1,16 @@
 package dao;
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import common.AbstractDao;
 import common.FactoryDao;
+import common.LoggerManager;
 import common.Util;
 import model.Uuidgenerator;
 
-// @SuppressWarnings("unchecked")
+@SuppressWarnings("unchecked")
 public class UuidgeneratorDao extends AbstractDao<Uuidgenerator> {
 
   protected UuidgeneratorDao() {
@@ -16,7 +18,7 @@ public class UuidgeneratorDao extends AbstractDao<Uuidgenerator> {
   }
 
 
-  public Uuidgenerator getUUID(String email) {
+  public Uuidgenerator getUUIDRegistraion(String email) {
     return transaction((em) -> {
       try {
         Query query = em.createNamedQuery("Uuidgenerator.findByEmail", Uuidgenerator.class);
@@ -33,6 +35,23 @@ public class UuidgeneratorDao extends AbstractDao<Uuidgenerator> {
         uuid.setCreateDate(new Date());
         super.update(uuid);
         return uuid;
+      }
+    });
+  }
+
+  public void changeStateUUIDRegistraion(String email) {
+    transaction((em) -> {
+      try {
+        Query query = em.createNamedQuery("Uuidgenerator.findByEmail", Uuidgenerator.class);
+        query.setParameter("email", email);
+        query.setParameter("state", FactoryDao.getDao(StateDao.class).Active());
+        query.setParameter("type", FactoryDao.getDao(TypeDao.class).Registraion());
+        for(Uuidgenerator item : (List<Uuidgenerator>) query.getResultList()) {
+          item.setState(FactoryDao.getDao(StateDao.class).Used());
+          super.update(item);
+        }
+      } catch (Throwable e) {
+        LoggerManager.getLogger(UuidgeneratorDao.class).error(e);
       }
     });
   }

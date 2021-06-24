@@ -8,7 +8,8 @@ import java.util.List;
 @Entity
 @NamedQueries({
   @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"), 
-  @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id=:id AND u.state=:state")
+  @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id=:id AND u.state=:state"),
+  @NamedQuery(name = "User.checkUser", query = "SELECT u FROM User u JOIN FETCH Password p WHERE u.id=:id AND u.state=:state AND p.state=:state AND p.password=:password")
 })
 public class User implements Serializable {
   private static final long serialVersionUID = 1L;

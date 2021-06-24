@@ -8,16 +8,17 @@ import dao.TypeDao;
 
 public class FactoryDao {
   private static FactoryDao instance = null;
-  private Map<Class<?>, AbstractDao<?>> flyweight = null;
+  private final Map<Class<?>, AbstractDao<?>> flyweight;
+
+  private FactoryDao() {
+    flyweight = new HashMap<Class<?>, AbstractDao<?>>();
+  }
 
   @SuppressWarnings("unchecked")
   public static <T> T getDao(Class<T> clz) {
     try {
       if (instance == null) {
         instance = new FactoryDao();
-      }
-      if (instance.flyweight == null) {
-        instance.flyweight = new HashMap<Class<?>, AbstractDao<?>>();
       }
       if (!instance.flyweight.containsKey(clz)) {
         Constructor<T> constructor = clz.getDeclaredConstructor();
@@ -36,6 +37,7 @@ public class FactoryDao {
   }
 
   public static void resetMaster() {
-    
+    FactoryDao.getDao(StateDao.class).clear();
+    FactoryDao.getDao(TypeDao.class).clear();
   }
 }

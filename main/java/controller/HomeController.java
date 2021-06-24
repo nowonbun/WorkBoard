@@ -2,6 +2,7 @@ package controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,7 @@ import dao.StateDao;
 import dao.UserDao;
 import dao.UuidgeneratorDao;
 import model.Company;
+import model.Password;
 import model.User;
 import model.Uuidgenerator;
 
@@ -41,11 +43,11 @@ public class HomeController extends AbstractController {
   @Autowired
   @Qualifier("UuidgeneratorDao")
   private UuidgeneratorDao registrationDao;
-  
+
   @Autowired
   @Qualifier("CompanyDao")
   private CompanyDao companyDao;
-  
+
   @Autowired
   @Qualifier("StateDao")
   private StateDao stateDao;
@@ -55,8 +57,19 @@ public class HomeController extends AbstractController {
     return "Home/index";
   }
 
-  @RequestMapping(value = "/login.html")
+  @RequestMapping(value = "/login.html", method = RequestMethod.GET)
   public String login(ModelMap modelmap, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+    return "Home/login";
+  }
+
+  @RequestMapping(value = "/login.html", method = RequestMethod.POST)
+  public String signin(@ModelAttribute JoinBean join, ModelMap modelmap, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+    if (!validateSignin(join)) {
+      return "Home/login";
+    }
+    if (userDao.isSignIn(join.getUsername(), Util.convertMD5(join.getPassword()))) {
+      return super.redirect("index.html");
+    }
     return "Home/login";
   }
 
@@ -77,7 +90,7 @@ public class HomeController extends AbstractController {
         mail.setAddress(PropertyMap.getInstance().getProperty("config", "mail_id"), join.getEmailAddress(), null, null);
         if (user == null) {
           super.getLogger().info("This user is nothing. " + join.getEmailAddress());
-          Uuidgenerator uuid = registrationDao.getUUID(join.getEmailAddress());
+          Uuidgenerator uuid = registrationDao.getUUIDRegistraion(join.getEmailAddress());
           mail.setSubject("[WorkBoard]Verification mail");
           super.getLogger().debug("template url - " + LocalPaths.getMailTempaltePath() + File.separator + "registration.html");
           try (FileInputStream stream = new FileInputStream(LocalPaths.getMailTempaltePath() + File.separator + "registration.html")) {
@@ -91,6 +104,7 @@ public class HomeController extends AbstractController {
             mail.setContent(contents);
           }
         } else {
+          // TODO: go to password
           super.getLogger().info("The user already exists. " + join.getEmailAddress());
         }
         mail.sendMail();
@@ -120,20 +134,49 @@ public class HomeController extends AbstractController {
     if (!validateJoinEntity1(join, true)) {
       return redirect("login.html");
     }
-    if(!validateJoinEntity2(join)) {
+    if (!validateJoinEntity2(join)) {
       modelmap.addAttribute("email", join.getEmail());
       modelmap.addAttribute("key", join.getKey());
       modelmap.addAttribute("type", join.getType());
       return "Home/join";
     }
+    Company company = createCompany(join);
+    companyDao.create(company);
+    User user = createUser(join, company);
+    userDao.create(user);
+
+    registrationDao.changeStateUUIDRegistraion(join.getEmail());
+
+    return redirect("login.html");
+  }
+
+
+  private Company createCompany(JoinBean join) {
     Company company = new Company();
     company.setName(join.getCompanyName());
     company.setState(stateDao.Active());
     company.setCreateDate(new Date());
-    
-    
-    // Sign up
-    return redirect("login.html");
+    return company;
+  }
+
+  private User createUser(JoinBean join, Company company) {
+    User user = new User();
+    user.setId(join.getEmail());
+    String name = join.getEmail();
+    name = name.substring(0, name.indexOf("@"));
+    user.setName(name);
+    user.setStateBean(stateDao.Active());
+    user.setCreateDate(new Date());
+    user.setAdmin(true);
+    user.setCompanyBean(company);
+    Password pwd = new Password();
+    pwd.setPassword(Util.convertMD5(join.getPassword()));
+    pwd.setState(stateDao.Active());
+    pwd.setCreateDate(new Date());
+    user.setPasswords(new ArrayList<>());
+    user.addPassword(pwd);
+
+    return user;
   }
 
   private boolean validateJoinEntity1(JoinBean join, boolean checkType) {
@@ -157,7 +200,7 @@ public class HomeController extends AbstractController {
     }
     return true;
   }
-  
+
   private boolean validateJoinEntity2(JoinBean join) {
     if (Util.isNullAndWhiteSpace(join.getCompanyName())) {
       super.getLogger().info("Invalid connection path. The company name is null.");
@@ -169,6 +212,18 @@ public class HomeController extends AbstractController {
     }
     if (Util.isNullAndWhiteSpace(join.getTerms())) {
       super.getLogger().info("Invalid connection path. The terms is null.");
+      return false;
+    }
+    return true;
+  }
+
+  private boolean validateSignin(JoinBean join) {
+    if (Util.isNullAndWhiteSpace(join.getUsername())) {
+      super.getLogger().info("Invalid connection path. The email is null.");
+      return false;
+    }
+    if (Util.isNullAndWhiteSpace(join.getPassword())) {
+      super.getLogger().info("Invalid connection path. The password is null.");
       return false;
     }
     return true;

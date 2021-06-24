@@ -11,9 +11,9 @@ import model.State;
 public class StateDao extends AbstractDao<State> {
 
   private Map<String, State> map = null;
-  public final String ACTIVE = "ACTI";
-  public final String DELETE = "DELE";
-  public final String USED = "USED";
+  private final String ACTIVE = "ACTI";
+  private final String DELETE = "DELE";
+  private final String USED = "USED";
 
   protected StateDao() {
     super(State.class);
