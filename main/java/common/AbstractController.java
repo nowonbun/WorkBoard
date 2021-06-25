@@ -6,8 +6,7 @@ public class AbstractController {
 
   private Logger logger = null;
 
-  public AbstractController() {
-  }
+  public AbstractController() {}
 
   protected Logger getLogger() {
     if (logger == null) {
@@ -18,5 +17,9 @@ public class AbstractController {
 
   protected String redirect(String url) {
     return "redirect:" + url;
+  }
+
+  protected String redirectMainPage() {
+    return redirect("/");
   }
 }

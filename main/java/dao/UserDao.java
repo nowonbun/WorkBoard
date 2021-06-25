@@ -38,7 +38,7 @@ public class UserDao extends AbstractDao<User> {
     });
   }
 
-  public boolean isSignIn(String id, String password) {
+  public User signIn(String id, String password) {
     return transaction((em) -> {
       try {
         Query query = em.createNamedQuery("User.checkUser", User.class);
@@ -47,11 +47,11 @@ public class UserDao extends AbstractDao<User> {
         query.setParameter("state", FactoryDao.getDao(StateDao.class).Active());
         User user = (User) query.getSingleResult();
         if (user.getPasswords().size() == 1) {
-          return true;
+          return user;
         }
-        return false;
+        return null;
       } catch (NoResultException e) {
-        return false;
+        return null;
       }
     });
   }

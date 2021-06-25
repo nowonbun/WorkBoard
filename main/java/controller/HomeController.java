@@ -19,6 +19,7 @@ import common.AbstractController;
 import common.LocalPaths;
 import common.MailManager;
 import common.PropertyMap;
+import common.SessionName;
 import common.Util;
 import dao.CompanyDao;
 import dao.StateDao;
@@ -57,20 +58,33 @@ public class HomeController extends AbstractController {
     return "Home/index";
   }
 
+  @RequestMapping(value = "/logout.html")
+  public String logout(ModelMap modelmap, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+    session.invalidate();
+    return super.redirect("login.html");
+  }
+
   @RequestMapping(value = "/login.html", method = RequestMethod.GET)
   public String login(ModelMap modelmap, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+    User user = (User) session.getAttribute(SessionName.USER);
+    if (user != null) {
+      return super.redirectMainPage();
+    }
     return "Home/login";
   }
+
 
   @RequestMapping(value = "/login.html", method = RequestMethod.POST)
   public String signin(@ModelAttribute JoinBean join, ModelMap modelmap, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
     if (!validateSignin(join)) {
       return "Home/login";
     }
-    if (userDao.isSignIn(join.getUsername(), Util.convertMD5(join.getPassword()))) {
-      return super.redirect("index.html");
+    User user = userDao.signIn(join.getUsername(), Util.convertMD5(join.getPassword()));
+    if (user == null) {
+      return "Home/login";
     }
-    return "Home/login";
+    session.setAttribute(SessionName.USER, user);
+    return super.redirectMainPage();
   }
 
   @RequestMapping(value = "/register.html")
