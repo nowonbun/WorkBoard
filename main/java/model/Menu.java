@@ -6,102 +6,98 @@ import java.util.List;
 
 
 @Entity
-@NamedQueries({
-  @NamedQuery(name = "Menu.findAll", query="SELECT m FROM Menu m"),
-  @NamedQuery(name = "Menu.findActiveAll", query = "SELECT m FROM Menu m WHERE m.isactive=true")
-})
+@NamedQueries({@NamedQuery(name = "Menu.findAll", query = "SELECT m FROM Menu m"), @NamedQuery(name = "Menu.findActiveAll", query = "SELECT m FROM Menu m WHERE m.isactive=true")})
 public class Menu implements Serializable {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	private String code;
-	
-	private boolean isadmin;
+  @Id
+  private String code;
 
-	private boolean isactive;
-	
-	private String name;
+  private boolean isadmin;
 
-	private String url;
+  private boolean isactive;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="subMenu")
-	private Menu menu;
+  private String name;
 
-	@OneToMany(mappedBy="menu", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private List<Menu> menus;
+  private String url;
 
-	public Menu() {
-	}
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "subMenu")
+  private Menu parent;
 
-	public String getCode() {
-		return this.code;
-	}
+  @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  private List<Menu> childs;
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+  public Menu() {}
 
-	public boolean getIsactive() {
-		return this.isactive;
-	}
+  public String getCode() {
+    return this.code;
+  }
 
-	public void setIsactive(boolean isactive) {
-		this.isactive = isactive;
-	}
-	
-	public boolean getIsadmin() {
-	  return this.isadmin;
-	}
-	
-	public void setIsadmin(boolean isadmin) {
-	  this.isadmin = isadmin;
-	}
+  public void setCode(String code) {
+    this.code = code;
+  }
 
-	public String getName() {
-		return this.name;
-	}
+  public boolean getIsactive() {
+    return this.isactive;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public void setIsactive(boolean isactive) {
+    this.isactive = isactive;
+  }
 
-	public String getUrl() {
-		return this.url;
-	}
+  public boolean getIsadmin() {
+    return this.isadmin;
+  }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+  public void setIsadmin(boolean isadmin) {
+    this.isadmin = isadmin;
+  }
 
-	public Menu getMenu() {
-		return this.menu;
-	}
+  public String getName() {
+    return this.name;
+  }
 
-	public void setMenu(Menu menu) {
-		this.menu = menu;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public List<Menu> getMenus() {
-		return this.menus;
-	}
+  public String getUrl() {
+    return this.url;
+  }
 
-	public void setMenus(List<Menu> menus) {
-		this.menus = menus;
-	}
+  public void setUrl(String url) {
+    this.url = url;
+  }
 
-	public Menu addMenus(Menu menus) {
-		getMenus().add(menus);
-		menus.setMenu(this);
+  public Menu getParent() {
+    return this.parent;
+  }
 
-		return menus;
-	}
+  public void setParent(Menu parent) {
+    this.parent = parent;
+  }
 
-	public Menu removeMenus(Menu menus) {
-		getMenus().remove(menus);
-		menus.setMenu(null);
+  public List<Menu> getChilds() {
+    return this.childs;
+  }
 
-		return menus;
-	}
+  public void setChilds(List<Menu> childs) {
+    this.childs = childs;
+  }
+
+  public Menu addPerents(Menu menus) {
+    getChilds().add(menus);
+    menus.setParent(this);
+
+    return menus;
+  }
+
+  public Menu removeParents(Menu menus) {
+    getChilds().remove(menus);
+    menus.setParent(null);
+
+    return menus;
+  }
 
 }
