@@ -3,6 +3,7 @@ package common;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
+import dao.MenuDao;
 import dao.StateDao;
 import dao.TypeDao;
 
@@ -34,10 +35,12 @@ public class FactoryDao {
   public static void initializeMaster() {
     FactoryDao.getDao(StateDao.class);
     FactoryDao.getDao(TypeDao.class);
+    FactoryDao.getDao(MenuDao.class);
   }
 
   public static void resetMaster() {
     FactoryDao.getDao(StateDao.class).clear();
     FactoryDao.getDao(TypeDao.class).clear();
+    FactoryDao.getDao(MenuDao.class).clear();
   }
 }

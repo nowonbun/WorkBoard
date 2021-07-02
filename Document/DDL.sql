@@ -80,3 +80,24 @@ create table uuidGenerator(
     foreign key (state) references state (code),
     foreign key (type) references type (code)
 );
+
+-- menu
+create table menu(
+	code char(4) not null,
+	name nvarchar(255) not null,
+	url nvarchar(255) not null,
+	subMenu char(4) null,
+	isactive bit not null default 1,
+	
+	primary key(code),
+	foreign key (subMenu) references menu (code)
+);
+
+insert into menu (code, name, url, subMenu, isAdmin, isactive) values('PBLC', 'Public', null, null, 0, 1);
+insert into menu (code, name, url, subMenu, isAdmin, isactive) values('PBLA', 'All Open', '/public/index.html', 'PBLC', 0, 1);
+insert into menu (code, name, url, subMenu, isAdmin, isactive) values('GRUP', 'Group', null, null, 0, 1);
+insert into menu (code, name, url, subMenu, isAdmin, isactive) values('GRPA', 'All Open', '/group/index.html', 'GRUP', 0, 1);
+insert into menu (code, name, url, subMenu, isAdmin, isactive) values('CHAT', 'Message Chat', '/chat/index.html', null, 0, 1);
+insert into menu (code, name, url, subMenu, isAdmin, isactive) values('STTN', 'Setting', null, null, 0, 1);
+insert into menu (code, name, url, subMenu, isAdmin, isactive) values('PRFL', 'Profile', '/setting/profile.html', 'STTN', 0, 1);
+insert into menu (code, name, url, subMenu, isAdmin, isactive) values('PRMS', 'Permission', '/setting/Permission.html', 'STTN', 1, 1);

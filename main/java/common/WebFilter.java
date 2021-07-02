@@ -25,7 +25,7 @@ public class WebFilter implements Filter {
     passUrl = new ArrayList<String>();
     String[] ignoredPaths = filterConfig.getInitParameter("passPage").split(",");
     for (String ignoredPath : ignoredPaths) {
-      passUrl.add(contextPath + ignoredPath);
+      passUrl.add(contextPath + ignoredPath.trim());
     }
   }
 

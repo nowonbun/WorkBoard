@@ -19,12 +19,10 @@
 			<div class="card-body">
 				<p class="login-box-msg">Register a new membership</p>
 				<span class="error-message" style="color: red;"></span>
+				<span class="notice-message" style="color: blue;"></span>
 				<form action="join.html" method="post">
 					<div class="input-group mb-3">
-						<input type="hidden" name="email" value="${email}"> 
-						<input type="hidden" name="key" value="${key}"> 
-						<input type="hidden" name="type" value="${type}"> 
-						<input type="email" class="form-control" placeholder="Email" readonly="readonly" disabled="disabled" value="${email}">
+						<input type="hidden" name="email" value="${email}"> <input type="hidden" name="key" value="${key}"> <input type="hidden" name="type" value="${type}"> <input type="email" class="form-control" placeholder="Email" readonly="readonly" disabled="disabled" value="${email}">
 						<div class="input-group-append">
 							<div class="input-group-text">
 								<span class="fas fa-envelope"></span>
@@ -58,8 +56,7 @@
 					<div class="row">
 						<div class="col-8">
 							<div class="icheck-primary">
-								<input type="checkbox" id="agreeTerms" name="terms" value="agree"> 
-								<label for="agreeTerms"> I agree to the <a href="#">terms</a></label>
+								<input type="checkbox" id="agreeTerms" name="terms" value="agree"> <label for="agreeTerms"> I agree to the <a href="#">terms</a></label>
 							</div>
 						</div>
 						<div class="col-4">
@@ -76,20 +73,53 @@
 	<script src="//cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/js/adminlte.min.js"></script>
 	<script>
-		$(function() {
-			(function() {
-				function isNullAndWhitespace(val) {
-					if (val === null || $.trim(val) === "") {
-						return true;
-					}
+		(function(_) {
+
+		})((function() {
+			function isNullAndWhitespace(val) {
+				if (val === null || $.trim(val) === "") {
+					return true;
+				}
+				return false;
+			}
+			function addError(message) {
+				if (!isNullAndWhitespace($(".error-message").html())) {
+					$(".error-message").html($(".error-message").html() + "<br />");
+				}
+				$(".error-message").html($(".error-message").html() + message);
+			}
+			function checkPassword() {
+				let pw = $("[name=password]").val();
+				let num = pw.search(/[0-9]/g);
+				let eng1 = pw.search(/[a-z]/ig);
+				let eng2 = pw.search(/[a-z]/ig);
+				if(pw.length < 8 || pw.length > 20) {
+					return false;
+				} else if(pw.search(/\s/) != -1) {
+					return false;
+				} else if(num < 0 || eng1 < 0 || eng2 < 0 ) {
 					return false;
 				}
-				function addError(message) {
-					if (!isNullAndWhitespace($(".error-message").html())) {
-						$(".error-message").html($(".error-message").html() + "<br />");
+				return true;
+			}
+			$(function() {
+				$("[type=password]").on("focus", function() {
+					if(!checkPassword()){
+						$(".notice-message").html("Make sure it's at least 8 characters including a number and a lowercase letter.");	
+					} else {
+						$(".notice-message").html("");
 					}
-					$(".error-message").html($(".error-message").html() + message);
-				}
+                });
+				$("[type=password]").on("keyup", function() {
+					if(!checkPassword()){
+						$(".notice-message").html("Make sure it's at least 8 characters including a number and a lowercase letter.");	
+					} else {
+						$(".notice-message").html("");
+					}
+                });
+                $("[type=password]").on("focusout", function() {
+                    $(".notice-message").html("");
+                });
 				$("form").on("submit", function() {
 					$(".error-message").html("");
 					let email = $("[name=email]").val();
@@ -108,7 +138,7 @@
 					let password = [];
 					$("[type=password]").each(function() {
 						if (isNullAndWhitespace($(this).val())) {
-							if(check){
+							if (check) {
 								addError("Please input password or Retype password.");
 								check = false;
 							}
@@ -128,10 +158,14 @@
 						addError("Please input same password and Retype password.");
 						return false;
 					}
+					if(!checkPassword()) {
+						addError("Make sure it's at least 8 characters including a number and a lowercase letter.");
+						return false;
+					}
 				});
-
-			})();
-		})
+			});
+			return {};
+		})());
 	</script>
 </body>
 </html>

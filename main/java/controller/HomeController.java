@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -55,6 +57,8 @@ public class HomeController extends AbstractController {
 
   @RequestMapping(value = "/index.html")
   public String index(ModelMap modelmap, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+    User user = (User) session.getAttribute(SessionName.USER);
+    modelmap.addAttribute("profileImage", Util.convertToBase64FromByte(user.getImg()));
     return "Home/index";
   }
 
@@ -154,6 +158,11 @@ public class HomeController extends AbstractController {
       modelmap.addAttribute("type", join.getType());
       return "Home/join";
     }
+    if(!validationPasswd(join.getPassword())) {
+      super.getLogger().info("Invalid connection path. The password is not match to regex.");
+      return "Home/join";
+    }
+
     Company company = createCompany(join);
     companyDao.create(company);
     User user = createUser(join, company);
@@ -179,6 +188,11 @@ public class HomeController extends AbstractController {
     String name = join.getEmail();
     name = name.substring(0, name.indexOf("@"));
     user.setName(name);
+    String profilename = name;
+    if (profilename.length() > 1) {
+      profilename = profilename.substring(0, 2);
+    }
+    user.setImg(Util.createProfileImage(profilename.toUpperCase()));
     user.setStateBean(stateDao.Active());
     user.setCreateDate(new Date());
     user.setAdmin(true);
@@ -191,6 +205,15 @@ public class HomeController extends AbstractController {
     user.addPassword(pwd);
 
     return user;
+  }
+
+  private boolean validationPasswd(String pw) {
+    Pattern p = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$");
+    Matcher m = p.matcher(pw);
+    if (m.matches()) {
+      return true;
+    }
+    return false;
   }
 
   private boolean validateJoinEntity1(JoinBean join, boolean checkType) {

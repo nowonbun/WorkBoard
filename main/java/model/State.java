@@ -14,7 +14,6 @@ public class State implements MasterTable, Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private String code;
 
   private boolean isactive;
