@@ -85,19 +85,26 @@ create table uuidGenerator(
 create table menu(
 	code char(4) not null,
 	name nvarchar(255) not null,
-	url nvarchar(255) not null,
-	subMenu char(4) null,
+	url nvarchar(255) null,
+	parent char(4) null,
+	icon varchar(255) null,
+	isAdmin bit not null default 0,
 	isactive bit not null default 1,
-	
+	displayOrder int null,
 	primary key(code),
-	foreign key (subMenu) references menu (code)
+	foreign key (parent) references menu (code)
 );
 
-insert into menu (code, name, url, subMenu, isAdmin, isactive) values('PBLC', 'Public', null, null, 0, 1);
-insert into menu (code, name, url, subMenu, isAdmin, isactive) values('PBLA', 'All Open', '/public/index.html', 'PBLC', 0, 1);
-insert into menu (code, name, url, subMenu, isAdmin, isactive) values('GRUP', 'Group', null, null, 0, 1);
-insert into menu (code, name, url, subMenu, isAdmin, isactive) values('GRPA', 'All Open', '/group/index.html', 'GRUP', 0, 1);
-insert into menu (code, name, url, subMenu, isAdmin, isactive) values('CHAT', 'Message Chat', '/chat/index.html', null, 0, 1);
-insert into menu (code, name, url, subMenu, isAdmin, isactive) values('STTN', 'Setting', null, null, 0, 1);
-insert into menu (code, name, url, subMenu, isAdmin, isactive) values('PRFL', 'Profile', '/setting/profile.html', 'STTN', 0, 1);
-insert into menu (code, name, url, subMenu, isAdmin, isactive) values('PRMS', 'Permission', '/setting/Permission.html', 'STTN', 1, 1);
+insert into menu (code, name, url, parent, icon, isAdmin, isactive, displayOrder) values('DSBD', 'DashBoard', 'dashboard/index.html', null, 'fa fa-dashboard', 0, 1, 1);
+insert into menu (code, name, url, parent, icon, isAdmin, isactive, displayOrder) values('WORK', 'Work', null, null, 'fas fa-business-time', 0, 1, 2);
+insert into menu (code, name, url, parent, icon, isAdmin, isactive, displayOrder) values('CHAT', 'Message Chat', 'chat/index.html', null, 'fa fa-wechat', 0, 1, 3);
+insert into menu (code, name, url, parent, icon, isAdmin, isactive, displayOrder) values('STTN', 'Setting', null, null, 'fa fa-gears', 1, 1, 4);
+insert into menu (code, name, url, parent, icon, isAdmin, isactive, displayOrder) values('ADUR', 'User', 'setting/user.html', 'STTN', 'fa fa-user-plus', 1, 1, 5);
+insert into menu (code, name, url, parent, icon, isAdmin, isactive, displayOrder) values('ADWK', 'Project', 'setting/project.html', 'STTN', 'fa fa-file-archive-o', 1, 1, 6);
+insert into menu (code, name, url, parent, icon, isAdmin, isactive, displayOrder) values('ADWJ', 'Create Wizard', 'setting/wizard.html', 'STTN', 'fas fa-hat-wizard', 1, 1, 7);
+insert into menu (code, name, url, parent, icon, isAdmin, isactive, displayOrder) values('PRFL', 'Profile', 'setting/profile.html', 'STTN', 'fa fa-id-card', 1, 1, 8);
+insert into menu (code, name, url, parent, icon, isAdmin, isactive, displayOrder) values('PRMS', 'Permission', 'setting/Permission.html', 'STTN', 'fa fa-gear', 1, 1, 9);
+insert into menu (code, name, url, parent, icon, isAdmin, isactive, displayOrder) values('GRPS', 'Group', 'setting/Group.html', 'STTN', 'fa fa-group', 1, 1, 10);
+
+
+

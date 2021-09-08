@@ -5,6 +5,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import common.AbstractDao;
 import common.FactoryDao;
+import model.Company;
 import model.User;
 
 @SuppressWarnings("unchecked")
@@ -50,6 +51,18 @@ public class UserDao extends AbstractDao<User> {
           return user;
         }
         return null;
+      } catch (NoResultException e) {
+        return null;
+      }
+    });
+  }
+  public long CountAdmin(Company company) {
+    return transaction((em) -> {
+      try {
+        Query query = em.createNamedQuery("User.checkIsAdmin");
+        query.setParameter("company", company);
+        query.setParameter("state", FactoryDao.getDao(StateDao.class).Active());
+        return (long)query.getSingleResult();
       } catch (NoResultException e) {
         return null;
       }

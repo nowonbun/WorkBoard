@@ -6,7 +6,8 @@ import java.util.List;
 
 
 @Entity
-@NamedQueries({@NamedQuery(name = "Menu.findAll", query = "SELECT m FROM Menu m"), @NamedQuery(name = "Menu.findActiveAll", query = "SELECT m FROM Menu m WHERE m.isactive=true")})
+@NamedQueries({@NamedQuery(name = "Menu.findAll", query = "SELECT m FROM Menu m"), 
+  @NamedQuery(name = "Menu.findActiveAll", query = "SELECT m FROM Menu m WHERE m.isactive=true order by m.displayOrder asc")})
 public class Menu implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -20,14 +21,18 @@ public class Menu implements Serializable {
   private String name;
 
   private String url;
+  
+  private String icon;
+  
+  private Integer displayOrder;
 
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "subMenu")
+  @JoinColumn(name = "parent")
   private Menu parent;
 
   @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private List<Menu> childs;
-
+  
   public Menu() {}
 
   public String getCode() {
@@ -68,6 +73,22 @@ public class Menu implements Serializable {
 
   public void setUrl(String url) {
     this.url = url;
+  }
+  
+  public String getIcon() {
+    return this.icon;
+  }
+  
+  public void setIcon(String icon) {
+    this.icon = icon;
+  }
+  
+  public Integer getDisplayOrder() {
+    return this.displayOrder;
+  }
+  
+  public void setDisplayOrder(Integer displayOrder) {
+    this.displayOrder = displayOrder;
   }
 
   public Menu getParent() {

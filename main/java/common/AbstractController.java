@@ -1,6 +1,8 @@
 package common;
 
+import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
+import model.User;
 
 public class AbstractController {
 
@@ -21,5 +23,13 @@ public class AbstractController {
 
   protected String redirectMainPage() {
     return redirect("/");
+  }
+
+  protected User getCurrentUser(HttpSession session) {
+    return (User) session.getAttribute(SessionName.USER);
+  }
+
+  protected String JsonResponse(boolean success, String message) {
+    return "{success:'" + success + "',message:'" + message + "'}";
   }
 }

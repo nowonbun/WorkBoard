@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,9 @@ public class MenuDao extends AbstractDao<Menu> {
         list = (List<Menu>) query.getResultList();
         list.forEach(x -> {
           ret.put(x.getCode(), x);
+          if (x.getChilds() != null && x.getChilds().size() > 0) {
+            x.setChilds(x.getChilds().stream().sorted(Comparator.comparing(Menu::getDisplayOrder)).collect(Collectors.toList()));
+          }
         });
         return ret;
       } catch (NoResultException e) {

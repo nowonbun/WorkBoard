@@ -2,9 +2,13 @@ package common;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
+@WebServlet("/resetMaster")
 public class Initialize extends HttpServlet {
   private static final long serialVersionUID = 1L;
   private Logger logger = null;
@@ -27,4 +31,14 @@ public class Initialize extends HttpServlet {
     logger.info("The program is start.");
     FactoryDao.initializeMaster();
   }
+
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+    logger.info("Master reset");
+    logger.info("Remote host - " + request.getRemoteHost());
+    logger.info("Remote port - " + request.getRemotePort());
+    logger.info("Remote addr - " + request.getRemoteAddr());
+    logger.info("Remote user - " + request.getRemoteUser());
+    FactoryDao.resetMaster();
+  }
+
 }

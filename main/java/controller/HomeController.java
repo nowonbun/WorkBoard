@@ -59,6 +59,7 @@ public class HomeController extends AbstractController {
   public String index(ModelMap modelmap, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
     User user = (User) session.getAttribute(SessionName.USER);
     modelmap.addAttribute("profileImage", Util.convertToBase64FromByte(user.getImg()));
+    modelmap.addAttribute("name", user.getName());
     return "Home/index";
   }
 

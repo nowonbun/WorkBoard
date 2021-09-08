@@ -73,6 +73,10 @@ public class Util {
     return Base64.getEncoder().encodeToString(data);
   }
 
+  public static byte[] convertToByteFromBase64(String data) {
+    return Base64.getDecoder().decode(data);
+  }
+
   public static <T> T convertToObjectFromJson(String json, Class<T> clz) {
     return gson.fromJson(json, clz);
   }

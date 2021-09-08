@@ -92,7 +92,7 @@
 				let pw = $("[name=password]").val();
 				let num = pw.search(/[0-9]/g);
 				let eng1 = pw.search(/[a-z]/ig);
-				let eng2 = pw.search(/[a-z]/ig);
+				let eng2 = pw.search(/[A-Z]/ig);
 				if(pw.length < 8 || pw.length > 20) {
 					return false;
 				} else if(pw.search(/\s/) != -1) {

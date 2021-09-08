@@ -9,6 +9,24 @@ public class JoinBean {
   private String password;
   private String terms;
   private String username;
+  private String image;
+  private boolean isAdmin;
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
+  }
+
+  public boolean getIsAdmin() {
+    return isAdmin;
+  }
+
+  public void setIsAdmin(boolean isAdmin) {
+    this.isAdmin = isAdmin;
+  }
 
   public String getUsername() {
     return username;

@@ -17,6 +17,10 @@
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/WorkBoard" />
 			<property name="javax.persistence.jdbc.user" value="test" />
 			<property name="javax.persistence.jdbc.password" value="a12345" />
+			<property name="eclipselink.ddl-generation" value="none" />
+      		<property name="eclipselink.cache.type.default" value="NONE" />
+      		<property name="eclipselink.cache.size.default" value="0" />
+      		<property name="eclipselink.cache.shared.default" value="false" /> 
 		</properties>
 	</persistence-unit>
 </persistence>
