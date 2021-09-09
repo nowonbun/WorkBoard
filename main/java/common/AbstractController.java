@@ -30,6 +30,6 @@ public class AbstractController {
   }
 
   protected String JsonResponse(boolean success, String message) {
-    return "{success:'" + success + "',message:'" + message + "'}";
+    return "{\"success\":\"" + success + "\", \"message\":\"" + message + "\"}";
   }
 }

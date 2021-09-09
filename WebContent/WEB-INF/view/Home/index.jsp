@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.13.1/css/OverlayScrollbars.min.css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 <link rel="stylesheet" href="css/common.css?v=1">
 <link rel="stylesheet" href="css/loader.css?v=1">
 </head>
@@ -125,10 +126,10 @@
 			<div class="sidebar">
 				<div class="user-panel mt-3 pb-3 mb-3 d-flex">
 					<div class="image">
-						<img src="data:image/png;base64,${profileImage}" class="img-circle elevation-2" alt="User Image">
+						<img src="data:image/png;base64,${profileImage}" class="img-circle elevation-2" alt="User Image" id="mainImage">
 					</div>
-					<div class="info">
-						<a href="#" class="d-block">${name}</a>
+					<div class="info" id="mainName" style="color:#fff;'">
+						${name}
 					</div>
 				</div>
 				<nav class="mt-2" id="menu"></nav>
@@ -499,7 +500,7 @@
 			<strong>Copyright &copy; 2021- <a href="https://www.nowonbun.com" target="_blank">www.nowonbun.com</a>.
 			</strong> All rights reserved.
 			<div class="float-right d-none d-sm-inline-block">
-				<b>Version</b> 3.1.0
+				<b>Version</b> 0.0.1
 			</div>
 		</footer>
 		<aside class="control-sidebar control-sidebar-dark"></aside>
@@ -522,7 +523,6 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.13.1/js/OverlayScrollbars.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/js/adminlte.min.js"></script>
-	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.all.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 	
 	<!-- AdminLTE for demo purposes -->

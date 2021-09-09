@@ -6,12 +6,6 @@
 	let imageBuffer = null;
 	let modal = new bootstrap.Modal($('#imageApplyModal')[0]);
 	
-	var Toast = Swal.mixin({
-		toast : true,
-		position : 'top-end',
-		showConfirmButton : false,
-		timer : 3000
-	});
 	function get(target) {
 		return $("[name=" + target + "]");
 	}
@@ -73,11 +67,21 @@
 						image: imageCode,
 						isAdmin: $("#isAdmin").is(":checked")
 					},
-					success : function(data) {
-						console.log(data);
-						//
+					success: function(data) {
+						if(data.success) {
+							message.success(data.message);
+							$("#password").val("");
+							$("#checkPassword").val("");
+							$("#mainName").html($("#name").val());
+							$("#mainImage").attr("src",$("#image").attr("src"));
+						} else {
+							message.error(data.message);
+						}
 					},
-					complete : function() {
+					error: function(data, e) {
+						message.error(e);
+					},
+					complete: function() {
 						loader.off();
 					}
 				});
@@ -91,10 +95,7 @@
 			$("#imageFile").on("change", function() {
 				let file = $(this)[0].files[0];
 				if (file.size > maximumImageFileSize) {
-					Toast.fire({
-						icon : 'error',
-						title : 'size limit'
-					});
+					message.error('size limit');
 					return;
 				}
 				$("label[for=imageFile]").text(file.name);

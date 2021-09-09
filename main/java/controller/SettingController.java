@@ -71,7 +71,7 @@ public class SettingController extends AbstractController {
   @ResponseBody
   public String profileModify(@ModelAttribute JoinBean join, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
     User user = super.getCurrentUser(session);
-    //user = userDao.findById(user.getId());
+    user = userDao.findById(user.getId());
     if (Util.isNullAndWhiteSpace(join.getUsername())) {
       return JsonResponse(false, "The data is fault.");
     }

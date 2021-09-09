@@ -1,3 +1,21 @@
+var message = (function(){
+	toastr.options.timeOut = 2000;
+	return {
+		info: function(msg) {
+			toastr.info(msg);
+		},
+		success: function(msg) {
+			toastr.success(msg);
+		},
+		error: function(msg) {
+			toastr.error(msg);
+		},
+		warming: function(msg) {
+			toastr.warning(msg);
+		}
+	};
+})();
+
 (function(_) {
 	_.init();
 	$(_.onLoad);
@@ -27,14 +45,14 @@
 		return ret;
 	}
 	function createQueryStringParameter(params) {
-		let ret = "";
-		for ( let key in params) {
-			if (params.hasOwnProperty(key)) {
-				ret += key + "=" + params[key];
-			}
-		}
-		return ret;
-	}
+        let ret = "";
+        for (let key in params) {
+            if (params.hasOwnProperty(key)) {
+                ret += "&"+ key + "=" + params[key];
+            }
+        }
+        return ret.substring(1);
+    }
 	function getAjax(data, done, fail, always) {
 		if (done !== undefined && typeof done === 'function') {
 			data.success = done;
