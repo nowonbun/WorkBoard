@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,7 +29,6 @@ import dao.UuidgeneratorDao;
 import model.Company;
 import model.Password;
 import model.User;
-import model.Uuidgenerator;
 
 @Controller
 public class HomeController extends AbstractController {
@@ -57,7 +55,7 @@ public class HomeController extends AbstractController {
 
   @RequestMapping(value = "/index.html")
   public String index(ModelMap modelmap, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
-    User user = (User) session.getAttribute(SessionName.USER);
+    var user = (User) session.getAttribute(SessionName.USER);
     modelmap.addAttribute("profileImage", Util.convertToBase64FromByte(user.getImg()));
     modelmap.addAttribute("name", user.getName());
     return "Home/index";
@@ -71,7 +69,7 @@ public class HomeController extends AbstractController {
 
   @RequestMapping(value = "/login.html", method = RequestMethod.GET)
   public String login(ModelMap modelmap, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
-    User user = (User) session.getAttribute(SessionName.USER);
+    var user = (User) session.getAttribute(SessionName.USER);
     if (user != null) {
       return super.redirectMainPage();
     }
@@ -84,7 +82,7 @@ public class HomeController extends AbstractController {
     if (!validateSignin(join)) {
       return "Home/login";
     }
-    User user = userDao.signIn(join.getUsername(), Util.convertMD5(join.getPassword()));
+    var user = userDao.signIn(join.getUsername(), Util.convertMD5(join.getPassword()));
     if (user == null) {
       return "Home/login";
     }
@@ -103,19 +101,19 @@ public class HomeController extends AbstractController {
       return "Home/register";
     }
     new Thread(() -> {
-      User user = userDao.findById(join.getEmailAddress());
+      var user = userDao.findById(join.getEmailAddress());
       try {
-        MailManager mail = new MailManager();
+        var mail = new MailManager();
         mail.setAddress(PropertyMap.getInstance().getProperty("config", "mail_id"), join.getEmailAddress(), null, null);
         if (user == null) {
           super.getLogger().info("This user is nothing. " + join.getEmailAddress());
-          Uuidgenerator uuid = registrationDao.getUUIDRegistraion(join.getEmailAddress());
+          var uuid = registrationDao.getUUIDRegistraion(join.getEmailAddress());
           mail.setSubject("[WorkBoard]Verification mail");
           super.getLogger().debug("template url - " + LocalPaths.getMailTempaltePath() + File.separator + "registration.html");
-          try (FileInputStream stream = new FileInputStream(LocalPaths.getMailTempaltePath() + File.separator + "registration.html")) {
+          try (var stream = new FileInputStream(LocalPaths.getMailTempaltePath() + File.separator + "registration.html")) {
             byte[] data = stream.readAllBytes();
-            String contents = new String(data, "UTF-8");
-            String url = PropertyMap.getInstance().getProperty("config", "host_address") + "join.html?email=" + uuid.getEmail() + "&key=" + uuid.getUuid();
+            var contents = new String(data, "UTF-8");
+            var url = PropertyMap.getInstance().getProperty("config", "host_address") + "join.html?email=" + uuid.getEmail() + "&key=" + uuid.getUuid();
             contents = contents.replace("#####HOME#####", PropertyMap.getInstance().getProperty("config", "host_address") + "login.html");
             contents = contents.replace("#####URL#####", url);
             super.getLogger().debug("#####HOME#####     " + PropertyMap.getInstance().getProperty("config", "host_address") + "login.html");
@@ -159,14 +157,14 @@ public class HomeController extends AbstractController {
       modelmap.addAttribute("type", join.getType());
       return "Home/join";
     }
-    if(!validationPasswd(join.getPassword())) {
+    if (!validationPasswd(join.getPassword())) {
       super.getLogger().info("Invalid connection path. The password is not match to regex.");
       return "Home/join";
     }
 
-    Company company = createCompany(join);
+    var company = createCompany(join);
     companyDao.create(company);
-    User user = createUser(join, company);
+    var user = createUser(join, company);
     userDao.create(user);
 
     registrationDao.changeStateUUIDRegistraion(join.getEmail());
@@ -176,7 +174,7 @@ public class HomeController extends AbstractController {
 
 
   private Company createCompany(JoinBean join) {
-    Company company = new Company();
+    var company = new Company();
     company.setName(join.getCompanyName());
     company.setState(stateDao.Active());
     company.setCreateDate(new Date());
@@ -184,21 +182,21 @@ public class HomeController extends AbstractController {
   }
 
   private User createUser(JoinBean join, Company company) {
-    User user = new User();
+    var user = new User();
     user.setId(join.getEmail());
-    String name = join.getEmail();
+    var name = join.getEmail();
     name = name.substring(0, name.indexOf("@"));
     user.setName(name);
-    String profilename = name;
+    var profilename = name;
     if (profilename.length() > 1) {
       profilename = profilename.substring(0, 2);
     }
     user.setImg(Util.createProfileImage(profilename.toUpperCase()));
-    user.setStateBean(stateDao.Active());
+    user.setState(stateDao.Active());
     user.setCreateDate(new Date());
     user.setAdmin(true);
     user.setCompanyBean(company);
-    Password pwd = new Password();
+    var pwd = new Password();
     pwd.setPassword(Util.convertMD5(join.getPassword()));
     pwd.setState(stateDao.Active());
     pwd.setCreateDate(new Date());
@@ -209,8 +207,8 @@ public class HomeController extends AbstractController {
   }
 
   private boolean validationPasswd(String pw) {
-    Pattern p = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$");
-    Matcher m = p.matcher(pw);
+    var p = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$");
+    var m = p.matcher(pw);
     if (m.matches()) {
       return true;
     }

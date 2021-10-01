@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import bean.JoinBean;
 import bean.ProfileBean;
+import bean.UserBean;
 import common.AbstractController;
 import common.SessionName;
 import common.Util;
@@ -34,28 +36,33 @@ public class SettingController extends AbstractController {
   private StateDao stateDao;
 
   @RequestMapping(value = "user.html")
-  public String user(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+  public String dispUser(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
     return "Setting/user";
   }
 
   @RequestMapping(value = "project.html")
-  public String project(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+  public String dispProject(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
     return "Setting/project";
   }
 
   @RequestMapping(value = "wizard.html")
-  public String wizard(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+  public String dispWizard(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
     return "Setting/wizard";
   }
 
   @RequestMapping(value = "profile.html")
-  public String profile(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+  public String dispProfile(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
     return "Setting/profile";
+  }
+
+  @RequestMapping(value = "permission.html")
+  public String dispPermission(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+    return "Setting/permission";
   }
 
   @RequestMapping(value = "profile.json", method = RequestMethod.POST)
   @ResponseBody
-  public String profileData(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+  public String getProfileData(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
     User user = super.getCurrentUser(session);
     ProfileBean profile = new ProfileBean();
     profile.setCompany(user.getCompany().getName());
@@ -69,7 +76,7 @@ public class SettingController extends AbstractController {
 
   @RequestMapping(value = "profileModify.json", method = RequestMethod.POST)
   @ResponseBody
-  public String profileModify(@ModelAttribute JoinBean join, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+  public String getProfileModify(@ModelAttribute JoinBean join, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
     User user = super.getCurrentUser(session);
     user = userDao.findById(user.getId());
     if (Util.isNullAndWhiteSpace(join.getUsername())) {
@@ -91,7 +98,7 @@ public class SettingController extends AbstractController {
     }
     if (join.getIsAdmin() != user.isAdmin()) {
       if (!join.getIsAdmin()) {
-        long count = userDao.CountAdmin(user.getCompany());
+        long count = userDao.countAdmin(user.getCompany());
         if (count < 2) {
           return JsonResponse(false, "The administrator of this company is disappears");
         }
@@ -104,8 +111,20 @@ public class SettingController extends AbstractController {
   }
 
 
-  @RequestMapping(value = "permission.html")
-  public String permission(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
-    return "Setting/permission";
+
+  @RequestMapping(value = "userlist.json", method = RequestMethod.POST)
+  @ResponseBody
+  public String getUserList(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+    var user = super.getCurrentUser(session);
+    var beanList = new ArrayList<UserBean>();
+    for (var u : userDao.getUserList(user.getCompany())) {
+      var node = new UserBean();
+      node.setId(u.getId());
+      node.setName(u.getName());
+      node.setState(Util.convertOX(stateDao.Active().equals(u.getState())));
+      node.setAdmin(Util.convertOX(u.isAdmin()));
+      beanList.add(node);
+    }
+    return Util.convertToJsonFromObject(beanList);
   }
 }

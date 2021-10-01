@@ -84,4 +84,12 @@ public class Util {
   public static String convertToJsonFromObject(Object obj) {
     return gson.toJson(obj);
   }
+  
+  public static String convertOX(boolean val) {
+    if(val) {
+      return "〇";
+    } else {
+      return "Ｘ";
+    }
+  }
 }

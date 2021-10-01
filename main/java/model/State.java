@@ -6,10 +6,7 @@ import common.MasterTable;
 import java.util.List;
 
 @Entity
-@NamedQueries({
-  @NamedQuery(name = "State.findAll", query = "SELECT s FROM State s"), 
-  @NamedQuery(name = "State.findActiveAll", query = "SELECT s FROM State s WHERE s.isactive=true")
-})
+@NamedQueries({@NamedQuery(name = "State.findAll", query = "SELECT s FROM State s"), @NamedQuery(name = "State.findActiveAll", query = "SELECT s FROM State s WHERE s.isactive=true")})
 public class State implements MasterTable, Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -112,14 +109,14 @@ public class State implements MasterTable, Serializable {
 
   public User addUser(User user) {
     getUsers().add(user);
-    user.setStateBean(this);
+    user.setState(this);
 
     return user;
   }
 
   public User removeUser(User user) {
     getUsers().remove(user);
-    user.setStateBean(null);
+    user.setState(null);
 
     return user;
   }

@@ -56,13 +56,26 @@ public class UserDao extends AbstractDao<User> {
       }
     });
   }
-  public long CountAdmin(Company company) {
+
+  public long countAdmin(Company company) {
     return transaction((em) -> {
       try {
         Query query = em.createNamedQuery("User.checkIsAdmin");
         query.setParameter("company", company);
         query.setParameter("state", FactoryDao.getDao(StateDao.class).Active());
-        return (long)query.getSingleResult();
+        return (long) query.getSingleResult();
+      } catch (NoResultException e) {
+        return null;
+      }
+    });
+  }
+
+  public List<User> getUserList(Company company) {
+    return transaction((em) -> {
+      try {
+        Query query = em.createNamedQuery("User.userList");
+        query.setParameter("company", company);
+        return (List<User>) query.getResultList();
       } catch (NoResultException e) {
         return null;
       }

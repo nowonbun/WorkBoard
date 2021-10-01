@@ -1,91 +1,72 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<style>
+.user-list {
+	padding: 0.5rem;
+}
+
+.user-list #userList_filter {
+	display: none;
+}
+
+.user-list #userList {
+	box-shadow: 1.2px 1.5px 2px;
+}
+
+.user-list .paginate_button [aria-controls=userList] {
+	border: 0px;
+}
+
+.user-list #userList_paginate {
+	font-size: 0.85rem;
+}
+
+.user-list .page-list {
+	padding: .3rem .55rem;
+}
+.user-list tbody tr {
+	cursor: pointer;
+}
+</style>
 <section class="content-header">
 	<div class="container-fluid">
 		<div class="row mb-2">
-			<div class="col-sm-6">
-				<h1>Project Add</h1>
-			</div>
+			<div class="col-sm-6"></div>
 			<div class="col-sm-6">
 				<ol class="breadcrumb float-sm-right">
 					<li class="breadcrumb-item"><a href="#">Home</a></li>
-					<li class="breadcrumb-item active">Project Add</li>
+					<li class="breadcrumb-item active">User</li>
 				</ol>
 			</div>
 		</div>
 	</div>
-	<!-- /.container-fluid -->
 </section>
-<!-- Main content -->
-<section class="content">
+<section class="content max-1200">
 	<div class="row">
-		<div class="col-md-6">
+		<div class="col-md-12">
 			<div class="card card-primary">
 				<div class="card-header">
-					<h3 class="card-title">General</h3>
-
-					<div class="card-tools">
-						<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-							<i class="fas fa-minus"></i>
-						</button>
-					</div>
+					<h3 class="card-title">User List</h3>
+					<div class="card-tools"></div>
 				</div>
-				<div class="card-body" style="display: block;">
-					<div class="form-group">
-						<label for="inputName">Project Name</label> <input type="text" id="inputName" class="form-control">
-					</div>
-					<div class="form-group">
-						<label for="inputDescription">Project Description</label>
-						<textarea id="inputDescription" class="form-control" rows="4"></textarea>
-					</div>
-					<div class="form-group">
-						<label for="inputStatus">Status</label> <select id="inputStatus" class="form-control custom-select">
-							<option selected="" disabled="">Select one</option>
-							<option>On Hold</option>
-							<option>Canceled</option>
-							<option>Success</option>
-						</select>
-					</div>
-					<div class="form-group">
-						<label for="inputClientCompany">Client Company</label> <input type="text" id="inputClientCompany" class="form-control">
-					</div>
-					<div class="form-group">
-						<label for="inputProjectLeader">Project Leader</label> <input type="text" id="inputProjectLeader" class="form-control">
-					</div>
+				<div class="card-body table-responsive user-list">
+					<table id="userList" class="table table-hover text-nowrap" style="width: 100%;">
+						<thead style="background-color: #f0f8ff;">
+							<tr>
+								<td>Id</td>
+								<td>Name</td>
+								<td style="width: 50px;">State</td>
+								<td style="width: 50px;">Admin</td>
+							</tr>
+						</thead>
+					</table>
 				</div>
-				<!-- /.card-body -->
 			</div>
-			<!-- /.card -->
-		</div>
-		<div class="col-md-6">
-			<div class="card card-secondary">
-				<div class="card-header">
-					<h3 class="card-title">Budget</h3>
-
-					<div class="card-tools">
-						<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-							<i class="fas fa-minus"></i>
-						</button>
-					</div>
-				</div>
-				<div class="card-body" style="display: block;">
-					<div class="form-group">
-						<label for="inputEstimatedBudget">Estimated budget</label> <input type="number" id="inputEstimatedBudget" class="form-control">
-					</div>
-					<div class="form-group">
-						<label for="inputSpentBudget">Total amount spent</label> <input type="number" id="inputSpentBudget" class="form-control">
-					</div>
-					<div class="form-group">
-						<label for="inputEstimatedDuration">Estimated project duration</label> <input type="number" id="inputEstimatedDuration" class="form-control">
-					</div>
-				</div>
-				<!-- /.card-body -->
-			</div>
-			<!-- /.card -->
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-12">
-			<a href="#" class="btn btn-secondary">Cancel</a> <input type="submit" value="Create new Porject" class="btn btn-success float-right">
+			<input type="submit" value="Add User..." class="btn btn-success float-right">
 		</div>
 	</div>
 </section>
+<script src="js/user.js?v=1"></script>
