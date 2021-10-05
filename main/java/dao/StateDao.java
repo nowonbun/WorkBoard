@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
 import common.AbstractDao;
 import model.State;
 
@@ -17,17 +16,16 @@ public class StateDao extends AbstractDao<State> {
 
   protected StateDao() {
     super(State.class);
-    if(map == null) {
+    if (map == null) {
       clear();
     }
   }
 
-  @SuppressWarnings("unchecked")
   public void clear() {
     this.map = transaction((em) -> {
       try {
-        Query query = em.createNamedQuery("State.findActiveAll", State.class);
-        Map<String, State> ret = new HashMap<>();
+        var query = em.createNamedQuery("State.findActiveAll", State.class);
+        var ret = new HashMap<String, State>();
         ((List<State>) query.getResultList()).forEach(x -> {
           ret.put(x.getCode(), x);
         });

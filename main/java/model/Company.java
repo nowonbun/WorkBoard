@@ -31,6 +31,9 @@ public class Company implements TransactionTable {
   @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<User> users;
 
+  @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private List<Groupteam> groups;
+
   public Company() {}
 
   public int getIdx() {
@@ -93,5 +96,27 @@ public class Company implements TransactionTable {
     user.setCompanyBean(null);
 
     return user;
+  }
+
+  public List<Groupteam> getGroups() {
+    return this.groups;
+  }
+
+  public void setGroups(List<Groupteam> groups) {
+    this.groups = groups;
+  }
+
+  public Groupteam addGroup(Groupteam group) {
+    getGroups().add(group);
+    group.setCompany(this);
+
+    return group;
+  }
+
+  public Groupteam removeGroup(Groupteam group) {
+    getGroups().remove(group);
+    group.setCompany(null);
+
+    return group;
   }
 }

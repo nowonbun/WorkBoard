@@ -1,16 +1,16 @@
-var message = (function(){
+var message = (function() {
 	toastr.options.timeOut = 2000;
 	return {
-		info: function(msg) {
+		info : function(msg) {
 			toastr.info(msg);
 		},
-		success: function(msg) {
+		success : function(msg) {
 			toastr.success(msg);
 		},
-		error: function(msg) {
+		error : function(msg) {
 			toastr.error(msg);
 		},
-		warming: function(msg) {
+		warming : function(msg) {
 			toastr.warning(msg);
 		}
 	};
@@ -45,14 +45,14 @@ var message = (function(){
 		return ret;
 	}
 	function createQueryStringParameter(params) {
-        let ret = "";
-        for (let key in params) {
-            if (params.hasOwnProperty(key)) {
-                ret += "&"+ key + "=" + params[key];
-            }
-        }
-        return ret.substring(1);
-    }
+		let ret = "";
+		for ( let key in params) {
+			if (params.hasOwnProperty(key)) {
+				ret += "&" + key + "=" + params[key];
+			}
+		}
+		return ret.substring(1);
+	}
 	function getAjax(data, done, fail, always) {
 		if (done !== undefined && typeof done === 'function') {
 			data.success = done;
@@ -137,9 +137,12 @@ var message = (function(){
 				loader.off();
 			});
 		});
+		$("#logout").on("click", function() {
+			location.href = "logout.html";
+		});
 	}
 	function movePage(code) {
-		if(code === undefined || code === null) {
+		if (code === undefined || code === null) {
 			return;
 		}
 		$(".main-menu-tab").removeClass("active");
@@ -152,7 +155,7 @@ var message = (function(){
 			$(parent).addClass("menu-is-opening menu-open");
 			$(parent).children("a").addClass("active");
 		}
-		let href =  $(a).attr("href");
+		let href = $(a).attr("href");
 		if (href === "#") {
 			return;
 		}

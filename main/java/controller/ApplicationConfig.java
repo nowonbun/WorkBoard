@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import common.FactoryDao;
 import dao.CompanyDao;
+import dao.GroupteamDao;
 import dao.MenuDao;
 import dao.StateDao;
 import dao.UserDao;
@@ -34,5 +35,10 @@ public class ApplicationConfig {
   @Bean(name = "MenuDao")
   public MenuDao getMenuDao() {
     return FactoryDao.getDao(MenuDao.class);
+  }
+
+  @Bean(name = "GroupteamDao")
+  public GroupteamDao getGroupDao() {
+    return FactoryDao.getDao(GroupteamDao.class);
   }
 }

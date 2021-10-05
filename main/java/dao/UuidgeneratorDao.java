@@ -3,14 +3,12 @@ package dao;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
 import common.AbstractDao;
 import common.FactoryDao;
 import common.LoggerManager;
 import common.Util;
 import model.Uuidgenerator;
 
-@SuppressWarnings("unchecked")
 public class UuidgeneratorDao extends AbstractDao<Uuidgenerator> {
 
   protected UuidgeneratorDao() {
@@ -21,7 +19,7 @@ public class UuidgeneratorDao extends AbstractDao<Uuidgenerator> {
   public Uuidgenerator getUUIDRegistraion(String email) {
     return transaction((em) -> {
       try {
-        Query query = em.createNamedQuery("Uuidgenerator.findByEmail", Uuidgenerator.class);
+        var query = em.createNamedQuery("Uuidgenerator.findByEmail", Uuidgenerator.class);
         query.setParameter("email", email);
         query.setParameter("state", FactoryDao.getDao(StateDao.class).Active());
         query.setParameter("type", FactoryDao.getDao(TypeDao.class).Registraion());
@@ -42,11 +40,11 @@ public class UuidgeneratorDao extends AbstractDao<Uuidgenerator> {
   public void changeStateUUIDRegistraion(String email) {
     transaction((em) -> {
       try {
-        Query query = em.createNamedQuery("Uuidgenerator.findByEmail", Uuidgenerator.class);
+        var query = em.createNamedQuery("Uuidgenerator.findByEmail", Uuidgenerator.class);
         query.setParameter("email", email);
         query.setParameter("state", FactoryDao.getDao(StateDao.class).Active());
         query.setParameter("type", FactoryDao.getDao(TypeDao.class).Registraion());
-        for(Uuidgenerator item : (List<Uuidgenerator>) query.getResultList()) {
+        for (Uuidgenerator item : (List<Uuidgenerator>) query.getResultList()) {
           item.setState(FactoryDao.getDao(StateDao.class).Used());
           super.update(item);
         }
@@ -59,7 +57,7 @@ public class UuidgeneratorDao extends AbstractDao<Uuidgenerator> {
   public boolean isHave(String email, String uuid) {
     return transaction((em) -> {
       try {
-        Query query = em.createNamedQuery("Uuidgenerator.isHave", Uuidgenerator.class);
+        var query = em.createNamedQuery("Uuidgenerator.isHave", Uuidgenerator.class);
         query.setParameter("email", email);
         query.setParameter("uuid", uuid);
         query.setParameter("state", FactoryDao.getDao(StateDao.class).Active());

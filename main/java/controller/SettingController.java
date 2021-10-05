@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import bean.GroupBean;
 import bean.JoinBean;
 import bean.ProfileBean;
 import bean.UserBean;
 import common.AbstractController;
 import common.SessionName;
 import common.Util;
+import dao.GroupteamDao;
 import dao.StateDao;
 import dao.UserDao;
 import model.Password;
@@ -34,6 +36,10 @@ public class SettingController extends AbstractController {
   @Autowired
   @Qualifier("StateDao")
   private StateDao stateDao;
+
+  @Autowired
+  @Qualifier("GroupteamDao")
+  private GroupteamDao groupteamDao;
 
   @RequestMapping(value = "user.html")
   public String dispUser(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
@@ -58,6 +64,11 @@ public class SettingController extends AbstractController {
   @RequestMapping(value = "permission.html")
   public String dispPermission(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
     return "Setting/permission";
+  }
+
+  @RequestMapping(value = "group.html")
+  public String dispGroup(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+    return "Setting/group";
   }
 
   @RequestMapping(value = "profile.json", method = RequestMethod.POST)
@@ -110,8 +121,6 @@ public class SettingController extends AbstractController {
     return JsonResponse(true, "The profile is updated.");
   }
 
-
-
   @RequestMapping(value = "userlist.json", method = RequestMethod.POST)
   @ResponseBody
   public String getUserList(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
@@ -123,6 +132,20 @@ public class SettingController extends AbstractController {
       node.setName(u.getName());
       node.setState(Util.convertOX(stateDao.Active().equals(u.getState())));
       node.setAdmin(Util.convertOX(u.isAdmin()));
+      beanList.add(node);
+    }
+    return Util.convertToJsonFromObject(beanList);
+  }
+
+  @RequestMapping(value = "grouplist.json", method = RequestMethod.POST)
+  @ResponseBody
+  public String getGroupList(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+    var user = super.getCurrentUser(session);
+    var beanList = new ArrayList<GroupBean>();
+    for (var g : groupteamDao.findAllByCompany(user.getCompany())) {
+      var node = new GroupBean();
+      node.setName(g.getName());
+      node.setState(Util.convertOX(stateDao.Active().equals(g.getState())));
       beanList.add(node);
     }
     return Util.convertToJsonFromObject(beanList);

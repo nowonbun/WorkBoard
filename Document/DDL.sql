@@ -95,6 +95,19 @@ create table menu(
 	foreign key (parent) references menu (code)
 );
 
+-- group
+create table `group` (
+	idx int not null auto_increment,
+	name nvarchar(255) not null,
+	company int not null,
+	state char(4) not null default 'ACTI',
+    create_date datetime not null default now(),
+    last_update datetime null,
+	primary key(idx),
+	foreign key (company) references company (idx),
+	foreign key (state) references state (code)
+);
+
 insert into menu (code, name, url, parent, icon, isAdmin, isactive, displayOrder) values('DSBD', 'DashBoard', 'dashboard/index.html', null, 'fa fa-dashboard', 0, 1, 1);
 insert into menu (code, name, url, parent, icon, isAdmin, isactive, displayOrder) values('WORK', 'Work', null, null, 'fas fa-business-time', 0, 1, 2);
 insert into menu (code, name, url, parent, icon, isAdmin, isactive, displayOrder) values('CHAT', 'Message Chat', 'chat/index.html', null, 'fa fa-wechat', 0, 1, 3);
@@ -103,8 +116,8 @@ insert into menu (code, name, url, parent, icon, isAdmin, isactive, displayOrder
 insert into menu (code, name, url, parent, icon, isAdmin, isactive, displayOrder) values('ADWK', 'Project', 'setting/project.html', 'STTN', 'fa fa-file-archive-o', 1, 1, 6);
 insert into menu (code, name, url, parent, icon, isAdmin, isactive, displayOrder) values('ADWJ', 'Create Wizard', 'setting/wizard.html', 'STTN', 'fas fa-hat-wizard', 1, 1, 7);
 insert into menu (code, name, url, parent, icon, isAdmin, isactive, displayOrder) values('PRFL', 'Profile', 'setting/profile.html', 'STTN', 'fa fa-id-card', 1, 1, 8);
-insert into menu (code, name, url, parent, icon, isAdmin, isactive, displayOrder) values('PRMS', 'Permission', 'setting/Permission.html', 'STTN', 'fa fa-gear', 1, 1, 9);
-insert into menu (code, name, url, parent, icon, isAdmin, isactive, displayOrder) values('GRPS', 'Group', 'setting/Group.html', 'STTN', 'fa fa-group', 1, 1, 10);
+insert into menu (code, name, url, parent, icon, isAdmin, isactive, displayOrder) values('PRMS', 'Permission', 'setting/permission.html', 'STTN', 'fa fa-gear', 1, 1, 9);
+insert into menu (code, name, url, parent, icon, isAdmin, isactive, displayOrder) values('GRPS', 'Group', 'setting/group.html', 'STTN', 'fa fa-group', 1, 1, 10);
 
 
 

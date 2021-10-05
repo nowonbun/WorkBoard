@@ -2,7 +2,6 @@ package dao;
 
 import java.util.List;
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
 import common.AbstractDao;
 import common.FactoryDao;
 import model.Company;
@@ -18,7 +17,7 @@ public class UserDao extends AbstractDao<User> {
   public List<User> findAll() {
     return transaction((em) -> {
       try {
-        Query query = em.createNamedQuery("User.findAll", User.class);
+        var query = em.createNamedQuery("User.findAll", User.class);
         return (List<User>) query.getResultList();
       } catch (NoResultException e) {
         return null;
@@ -29,7 +28,7 @@ public class UserDao extends AbstractDao<User> {
   public User findById(String id) {
     return transaction((em) -> {
       try {
-        Query query = em.createNamedQuery("User.findById", User.class);
+        var query = em.createNamedQuery("User.findById", User.class);
         query.setParameter("id", id);
         query.setParameter("state", FactoryDao.getDao(StateDao.class).Active());
         return (User) query.getSingleResult();
@@ -42,7 +41,7 @@ public class UserDao extends AbstractDao<User> {
   public User signIn(String id, String password) {
     return transaction((em) -> {
       try {
-        Query query = em.createNamedQuery("User.checkUser", User.class);
+        var query = em.createNamedQuery("User.checkUser", User.class);
         query.setParameter("id", id);
         query.setParameter("password", password);
         query.setParameter("state", FactoryDao.getDao(StateDao.class).Active());
@@ -60,7 +59,7 @@ public class UserDao extends AbstractDao<User> {
   public long countAdmin(Company company) {
     return transaction((em) -> {
       try {
-        Query query = em.createNamedQuery("User.checkIsAdmin");
+        var query = em.createNamedQuery("User.checkIsAdmin");
         query.setParameter("company", company);
         query.setParameter("state", FactoryDao.getDao(StateDao.class).Active());
         return (long) query.getSingleResult();
@@ -73,7 +72,7 @@ public class UserDao extends AbstractDao<User> {
   public List<User> getUserList(Company company) {
     return transaction((em) -> {
       try {
-        Query query = em.createNamedQuery("User.userList");
+        var query = em.createNamedQuery("User.userList");
         query.setParameter("company", company);
         return (List<User>) query.getResultList();
       } catch (NoResultException e) {

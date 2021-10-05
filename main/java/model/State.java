@@ -6,7 +6,10 @@ import common.MasterTable;
 import java.util.List;
 
 @Entity
-@NamedQueries({@NamedQuery(name = "State.findAll", query = "SELECT s FROM State s"), @NamedQuery(name = "State.findActiveAll", query = "SELECT s FROM State s WHERE s.isactive=true")})
+@NamedQueries({
+  @NamedQuery(name = "State.findAll", query = "SELECT s FROM State s"), 
+  @NamedQuery(name = "State.findActiveAll", query = "SELECT s FROM State s WHERE s.isactive=true")
+})
 public class State implements MasterTable, Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -28,6 +31,9 @@ public class State implements MasterTable, Serializable {
 
   @OneToMany(mappedBy = "state", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<Uuidgenerator> registrations;
+
+  @OneToMany(mappedBy = "state", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private List<Groupteam> groups;
 
   public State() {}
 
@@ -141,6 +147,28 @@ public class State implements MasterTable, Serializable {
     registration.setState(null);
 
     return registration;
+  }
+
+  public List<Groupteam> getGroups() {
+    return this.groups;
+  }
+
+  public void setGroups(List<Groupteam> groups) {
+    this.groups = groups;
+  }
+
+  public Groupteam addGroup(Groupteam group) {
+    getGroups().add(group);
+    group.setState(this);
+
+    return group;
+  }
+
+  public Groupteam removeGroup(Groupteam group) {
+    getGroups().remove(group);
+    group.setState(null);
+
+    return group;
   }
 
 }

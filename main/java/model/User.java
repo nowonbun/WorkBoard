@@ -6,10 +6,13 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@NamedQueries({@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"), @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id=:id AND u.state=:state"),
+@NamedQueries({
+    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"), 
+    @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id=:id AND u.state=:state"),
     @NamedQuery(name = "User.checkUser", query = "SELECT u FROM User u JOIN FETCH u.passwords p WHERE u.id=:id AND u.state=:state AND p.state=:state AND p.password=:password"),
     @NamedQuery(name = "User.checkIsAdmin", query = "SELECT count(u) FROM User u WHERE u.company=:company AND u.state=:state"),
-    @NamedQuery(name = "User.userList", query = "SELECT u FROM User u WHERE u.company=:company")})
+    @NamedQuery(name = "User.userList", query = "SELECT u FROM User u WHERE u.company=:company")
+})
 public class User implements Serializable {
   private static final long serialVersionUID = 1L;
 

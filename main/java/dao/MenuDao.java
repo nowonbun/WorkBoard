@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
 import common.AbstractDao;
 import model.Menu;
 
@@ -22,12 +21,11 @@ public class MenuDao extends AbstractDao<Menu> {
     }
   }
 
-  @SuppressWarnings("unchecked")
   public void clear() {
     this.map = transaction((em) -> {
       try {
-        Query query = em.createNamedQuery("Menu.findActiveAll", Menu.class);
-        Map<String, Menu> ret = new HashMap<>();
+        var query = em.createNamedQuery("Menu.findActiveAll", Menu.class);
+        var ret = new HashMap<String, Menu>();
         list = (List<Menu>) query.getResultList();
         list.forEach(x -> {
           ret.put(x.getCode(), x);

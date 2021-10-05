@@ -7,30 +7,29 @@
 
 		},
 		onLoad : function() {
-			let table = $('#userList').DataTable({
+			let table = $('#groupList').DataTable({
 				ajax : {
-					url : 'setting/userlist.json',
+					url : 'setting/grouplist.json',
 					type : "POST",
 					dataSrc : ''
 				},
 				columns : [ {
-					data : 'id'
-				}, {
 					data : 'name'
 				}, {
 					data : 'state'
-				}, {
-					data : 'isAdmin'
 				} ],
 				lengthChange : false,
 				bInfo : false
 			});
-			$("#userList tbody").on('click', 'tr', function() {
+			$("#groupList tbody").on('click', 'tr', function() {
 				let data = table.row(this).data();
 				console.log(data);
 			});
-			$("#addUser").on('click', function() {
-				
+			$("#addGroup").on('click', function() {
+				$(".add-board").show();
+			});
+			$("#groupTeamSave").on("click", function(){
+				console.log("add group");
 			});
 		}
 	}

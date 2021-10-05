@@ -118,9 +118,14 @@
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#" role="button">
+					<a class="nav-link" href="#" role="button" data-toggle="dropdown">
 						<i class="fa fa-user"></i>
 					</a>
+					<div class="dropdown-menu dropdown-menu-right">
+						<a href="#" class="dropdown-item" id="logout"> 
+							<i class="fa fa-power-off"></i><span style="margin-left:10px;">Logout</span>
+						</a>
+					</div>
 				</li>
 			</ul>
 		</nav>

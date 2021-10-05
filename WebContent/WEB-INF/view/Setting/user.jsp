@@ -23,6 +23,7 @@
 .user-list .page-list {
 	padding: .3rem .55rem;
 }
+
 .user-list tbody tr {
 	cursor: pointer;
 }
@@ -65,7 +66,38 @@
 	</div>
 	<div class="row">
 		<div class="col-12">
-			<input type="submit" value="Add User..." class="btn btn-success float-right">
+			<button class="btn btn-success float-right" id="addUser">Add User...</button>
+		</div>
+	</div>
+	<div class="card card-primary mt-2">
+		<div class="card-body">
+			<div class="error" style="display: none;"></div>
+			<form id="profileForm">
+				<div class="form-group">
+					<label for="company">Company</label> 
+					<input type="text" id="company" name="company" class="form-control" readonly="readonly" disabled="disabled">
+				</div>
+				<div class="form-group">
+					<label for="company">Group</label> 
+					<input type="text" id="group" name="group" class="form-control" readonly="readonly" disabled="disabled">
+				</div>
+				<div class="form-group">
+					<label for="uid">ID</label> 
+					<input type="email" class="form-control" placeholder="Email" name="emailAddress">
+				</div>
+				<div class="form-group">
+					<label for="image">Image</label> 
+					<img class="form-control img-apply" id="image" name="image" style="width: 120px; height: 120px; cursor: pointer;">
+				</div>
+				<div class="icheck-primary">
+					<input type="checkbox" id="isAdmin" name="isAdmin"> <label for="isAdmin">Permission Admin</label>
+				</div>
+			</form>
+		</div>
+		<div class="row mb-2" style="width: 100%;">
+			<div class="col-12 text-right">
+				<button class="btn btn-success float-right" id="profileSave">Save</button>
+			</div>
 		</div>
 	</div>
 </section>

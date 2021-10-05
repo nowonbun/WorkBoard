@@ -9,6 +9,7 @@
 		<class>model.Uuidgenerator</class>
 		<class>model.Type</class>
 		<class>model.Menu</class>
+		<class>model.Groupteam</class>
 		<properties>
 			<property name="eclipselink.query-results-cache" value="false" />
 			<property name="eclipselink.logging.level" value="INFO" />

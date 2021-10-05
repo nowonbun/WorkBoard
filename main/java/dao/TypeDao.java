@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
 import common.AbstractDao;
 import model.Type;
 
@@ -21,11 +20,10 @@ public class TypeDao extends AbstractDao<Type> {
     }
   }
 
-  @SuppressWarnings("unchecked")
   public void clear() {
     this.map = transaction((em) -> {
       try {
-        Query query = em.createNamedQuery("Type.findActiveAll", Type.class);
+        var query = em.createNamedQuery("Type.findActiveAll", Type.class);
         map = new HashMap<>();
         ((List<Type>) query.getResultList()).forEach(x -> {
           map.put(x.getCode(), x);

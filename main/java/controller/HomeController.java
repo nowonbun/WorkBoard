@@ -84,6 +84,7 @@ public class HomeController extends AbstractController {
     }
     var user = userDao.signIn(join.getUsername(), Util.convertMD5(join.getPassword()));
     if (user == null) {
+      modelmap.addAttribute("failedLogin", "Wrong password. Try again or click Forgot password to reset it.");
       return "Home/login";
     }
     session.setAttribute(SessionName.USER, user);
