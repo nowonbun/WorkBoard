@@ -28,8 +28,4 @@ public class AbstractController {
   protected User getCurrentUser(HttpSession session) {
     return (User) session.getAttribute(SessionName.USER);
   }
-
-  protected String JsonResponse(boolean success, String message) {
-    return "{\"success\":\"" + success + "\", \"message\":\"" + message + "\"}";
-  }
 }

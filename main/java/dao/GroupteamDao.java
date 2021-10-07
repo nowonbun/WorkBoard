@@ -3,7 +3,6 @@ package dao;
 import java.util.List;
 import javax.persistence.NoResultException;
 import common.AbstractDao;
-import common.FactoryDao;
 import model.Company;
 import model.Groupteam;
 
@@ -24,13 +23,39 @@ public class GroupteamDao extends AbstractDao<Groupteam> {
     });
   }
 
-  public Groupteam findById(Company company, String name) {
+  public Groupteam findById(Company company, int idx) {
     return transaction((em) -> {
       try {
         var query = em.createNamedQuery("Groupteam.findById", Groupteam.class);
         query.setParameter("company", company);
+        query.setParameter("idx", idx);
+        return (Groupteam) query.getSingleResult();
+      } catch (NoResultException e) {
+        return null;
+      }
+    });
+  }
+
+  public Groupteam findByName(Company company, String name) {
+    return transaction((em) -> {
+      try {
+        var query = em.createNamedQuery("Groupteam.findByName", Groupteam.class);
+        query.setParameter("company", company);
         query.setParameter("name", name);
-        query.setParameter("state", FactoryDao.getDao(StateDao.class).Active());
+        return (Groupteam) query.getSingleResult();
+      } catch (NoResultException e) {
+        return null;
+      }
+    });
+  }
+
+  public Groupteam findByNameWithoutId(Company company, int idx, String name) {
+    return transaction((em) -> {
+      try {
+        var query = em.createNamedQuery("Groupteam.findByNameWithoutId", Groupteam.class);
+        query.setParameter("company", company);
+        query.setParameter("idx", idx);
+        query.setParameter("name", name);
         return (Groupteam) query.getSingleResult();
       } catch (NoResultException e) {
         return null;
@@ -43,7 +68,6 @@ public class GroupteamDao extends AbstractDao<Groupteam> {
       try {
         var query = em.createNamedQuery("Groupteam.findAllByCompany", Groupteam.class);
         query.setParameter("company", company);
-        query.setParameter("state", FactoryDao.getDao(StateDao.class).Active());
         return (List<Groupteam>) query.getResultList();
       } catch (NoResultException e) {
         return null;

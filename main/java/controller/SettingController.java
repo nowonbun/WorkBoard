@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import bean.GroupBean;
 import bean.JoinBean;
+import bean.MessageBean;
 import bean.ProfileBean;
 import bean.UserBean;
 import common.AbstractController;
@@ -22,6 +23,7 @@ import common.Util;
 import dao.GroupteamDao;
 import dao.StateDao;
 import dao.UserDao;
+import model.Groupteam;
 import model.Password;
 import model.User;
 
@@ -91,7 +93,7 @@ public class SettingController extends AbstractController {
     User user = super.getCurrentUser(session);
     user = userDao.findById(user.getId());
     if (Util.isNullAndWhiteSpace(join.getUsername())) {
-      return JsonResponse(false, "The data is fault.");
+      return MessageBean.Message(false, "The data is fault.");
     }
     user.setName(join.getUsername());
     if (!Util.isNullAndWhiteSpace(join.getPassword())) {
@@ -111,14 +113,14 @@ public class SettingController extends AbstractController {
       if (!join.getIsAdmin()) {
         long count = userDao.countAdmin(user.getCompany());
         if (count < 2) {
-          return JsonResponse(false, "The administrator of this company is disappears");
+          return MessageBean.Message(false, "The administrator of this company is disappears");
         }
       }
       user.setAdmin(join.getIsAdmin());
     }
     userDao.update(user);
     session.setAttribute(SessionName.USER, user);
-    return JsonResponse(true, "The profile is updated.");
+    return MessageBean.Message(true, "The profile is updated.");
   }
 
   @RequestMapping(value = "userlist.json", method = RequestMethod.POST)
@@ -130,7 +132,7 @@ public class SettingController extends AbstractController {
       var node = new UserBean();
       node.setId(u.getId());
       node.setName(u.getName());
-      node.setState(Util.convertOX(stateDao.Active().equals(u.getState())));
+      node.setState(Util.convertOX(stateDao.Active(), u.getState()));
       node.setAdmin(Util.convertOX(u.isAdmin()));
       beanList.add(node);
     }
@@ -144,10 +146,47 @@ public class SettingController extends AbstractController {
     var beanList = new ArrayList<GroupBean>();
     for (var g : groupteamDao.findAllByCompany(user.getCompany())) {
       var node = new GroupBean();
+      node.setIdx(g.getIdx());
       node.setName(g.getName());
-      node.setState(Util.convertOX(stateDao.Active().equals(g.getState())));
+      node.setState(Util.convertOX(stateDao.Active(), g.getState()));
+      node.setActive(stateDao.Active().getCode().equals(g.getState().getCode()));
       beanList.add(node);
     }
     return Util.convertToJsonFromObject(beanList);
+  }
+
+  @RequestMapping(value = "addGroupName.json", method = RequestMethod.POST)
+  @ResponseBody
+  public String addGroupName(@ModelAttribute GroupBean group, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+    var user = super.getCurrentUser(session);
+    if (groupteamDao.findByName(user.getCompany(), group.getName()) != null) {
+      return MessageBean.Message(false, "The group name is exist.");
+    }
+    var groupteam = new Groupteam();
+    groupteam.setName(group.getName());
+    groupteam.setCompany(user.getCompany());
+    groupteam.setState(stateDao.Active());
+    groupteam.setCreateDate(new Date());
+    groupteamDao.create(groupteam);
+    return MessageBean.Message(true, "The group name is added.");
+  }
+
+  @RequestMapping(value = "modifyGroupName.json", method = RequestMethod.POST)
+  @ResponseBody
+  public String modifyGroupName(@ModelAttribute GroupBean group, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+    var user = super.getCurrentUser(session);
+    var groupteam = groupteamDao.findById(user.getCompany(), group.getIdx());
+    if (groupteam == null) {
+      return MessageBean.Message(false, "The group name is null.");
+    }
+    if (groupteamDao.findByNameWithoutId(user.getCompany(), group.getIdx(), group.getName()) != null) {
+      return MessageBean.Message(false, "The group name is exist.");
+    }
+    groupteam.setName(group.getName());
+    groupteam.setCompany(user.getCompany());
+    groupteam.setState(group.isActive() ? stateDao.Active() : stateDao.Delete());
+    groupteam.setLastUpdate(new Date());
+    groupteamDao.update(groupteam);
+    return MessageBean.Message(true, "The group name is updated.");
   }
 }

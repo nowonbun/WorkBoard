@@ -7,8 +7,10 @@ import java.util.Date;
 @Entity
 @NamedQueries({
   @NamedQuery(name = "Groupteam.findAll", query = "SELECT g FROM Groupteam g"),
-  @NamedQuery(name = "Groupteam.findById", query = "SELECT g FROM Groupteam g WHERE g.company=:company AND g.name=:name AND g.state=:state"),
-  @NamedQuery(name = "Groupteam.findAllByCompany", query = "SELECT g FROM Groupteam g WHERE g.company=:company AND g.state=:state")
+  @NamedQuery(name = "Groupteam.findById", query = "SELECT g FROM Groupteam g WHERE g.company=:company AND g.idx=:idx"),
+  @NamedQuery(name = "Groupteam.findByName", query = "SELECT g FROM Groupteam g WHERE g.company=:company AND g.name=:name"),
+  @NamedQuery(name = "Groupteam.findByNameWithoutId", query = "SELECT g FROM Groupteam g WHERE g.company=:company AND g.name=:name AND g.idx!=:idx"),
+  @NamedQuery(name = "Groupteam.findAllByCompany", query = "SELECT g FROM Groupteam g WHERE g.company=:company")
 })
 public class Groupteam implements TransactionTable {
   private static final long serialVersionUID = 1L;

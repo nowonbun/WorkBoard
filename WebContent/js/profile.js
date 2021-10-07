@@ -7,7 +7,7 @@
 	let modal = new bootstrap.Modal($('#imageApplyModal')[0]);
 
 	function get(target) {
-		return $("[name=" + target + "]");
+		return $("#" + target);
 	}
 
 	function getValue(target) {

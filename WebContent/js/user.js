@@ -2,6 +2,10 @@
 	_.init();
 	$(_.onLoad);
 })((function() {
+	function initText() {
+		$(".add-user-board").hide();
+		$(".modify-user-board").hide();
+	}
 	return {
 		init : function() {
 
@@ -22,6 +26,7 @@
 				}, {
 					data : 'isAdmin'
 				} ],
+				lengthMenu : [ 5 ],
 				lengthChange : false,
 				bInfo : false
 			});
@@ -30,7 +35,8 @@
 				console.log(data);
 			});
 			$("#addUser").on('click', function() {
-				
+				initText();
+				$(".add-user-board").show();
 			});
 		}
 	}

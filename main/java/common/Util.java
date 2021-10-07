@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.UUID;
 import javax.imageio.ImageIO;
 import com.google.gson.Gson;
+import model.State;
 
 public class Util {
   private final static DateFormat dateFormat2 = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -84,9 +85,17 @@ public class Util {
   public static String convertToJsonFromObject(Object obj) {
     return gson.toJson(obj);
   }
-  
+
   public static String convertOX(boolean val) {
-    if(val) {
+    if (val) {
+      return "〇";
+    } else {
+      return "Ｘ";
+    }
+  }
+
+  public static String convertOX(State a, State b) {
+    if (a.getCode().equals(b.getCode())) {
       return "〇";
     } else {
       return "Ｘ";
