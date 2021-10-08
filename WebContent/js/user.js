@@ -8,7 +8,7 @@
 	}
 	return {
 		init : function() {
-
+			
 		},
 		onLoad : function() {
 			let table = $('#userList').DataTable({
@@ -37,6 +37,7 @@
 			$("#addUser").on('click', function() {
 				initText();
 				$(".add-user-board").show();
+				$("#group").select2();
 			});
 		}
 	}

@@ -80,7 +80,7 @@
 					</div>
 					<div class="form-group">
 						<label for="company">Group</label> 
-						<input type="text" id="group" name="group" class="form-control" readonly="readonly" disabled="disabled">
+						<select id="group" name="group" class="form-control" multiple="multiple"></select>
 					</div>
 					<div class="form-group">
 						<label for="uid">ID</label> 
