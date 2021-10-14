@@ -6,6 +6,7 @@
 
 .group-list #groupList_filter {
 	/*display: none;*/
+	
 }
 
 .group-list #groupList {
@@ -27,8 +28,12 @@
 .group-list tbody tr {
 	cursor: pointer;
 }
+
+.group-list .dataTables_info {
+	display:none;	
+}
 </style>
-<div class="row" style="margin:0px!important;">
+<div class="row" style="margin: 0px !important;">
 	<section class="content-header col-12">
 		<div class="container-fluid">
 			<div class="row mb-2">
@@ -68,13 +73,12 @@
 				<button class="btn btn-success float-right" id="addGroup">Add Group...</button>
 			</div>
 		</div>
-		<div class="card card-primary mt-2 add-group-board" style="display:none;">
+		<div class="card card-primary mt-2 add-group-board" style="display: none;">
 			<div class="card-body">
 				<div class="error" style="display: none;"></div>
 				<form id="profileForm">
 					<div class="form-group">
-						<label for="group">Group</label> 
-						<input type="text" id="addGroupName" class="form-control">
+						<label for="group">Group</label> <input type="text" id="addGroupName" class="form-control">
 					</div>
 				</form>
 			</div>
@@ -84,13 +88,12 @@
 				</div>
 			</div>
 		</div>
-		<div class="card card-primary mt-2 modify-group-board" style="display:none;">
+		<div class="card card-primary mt-2 modify-group-board" style="display: none;">
 			<div class="card-body">
 				<div class="error" style="display: none;"></div>
 				<form id="profileForm">
 					<div class="form-group">
-						<label for="group">Group</label> 
-						<input type="text" id="modifyGroupName" class="form-control">
+						<label for="group">Group</label> <input type="text" id="modifyGroupName" class="form-control">
 					</div>
 					<div class="icheck-primary">
 						<input type="checkbox" id="isActive"> <label for="isActive">Active</label>

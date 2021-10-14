@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" />
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 <!-- datatable -->
-<link rel="stylesheet" href="//cdn.datatables.net/1.11.1/css/dataTables.bootstrap4.min.css" />
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" />
 <link rel="stylesheet" href="//cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css" />
 <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
 <!-- datatable -->
@@ -538,8 +538,8 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/js/adminlte.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 	<!-- datatable -->
-	<script src="//cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
-	<script src="//cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
+	<script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+	<script src="//cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 	<script src="//cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"></script>
 	<script src="//cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 	<!-- datatable -->

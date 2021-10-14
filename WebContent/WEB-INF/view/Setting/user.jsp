@@ -27,6 +27,9 @@
 .user-list tbody tr {
 	cursor: pointer;
 }
+.user-list .dataTables_info {
+	display:none;	
+}
 </style>
 <div class="row" style="margin:0px!important;">
 	<section class="content-header col-12">
