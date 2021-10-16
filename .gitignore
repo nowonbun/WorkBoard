@@ -1,2 +1,5 @@
 /build/
 /target/
+/main/java/META-INF/
+/main/java/META-INF/persistence.xml
+/main/java/META-INF
