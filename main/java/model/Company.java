@@ -1,13 +1,13 @@
 package model;
 
 import javax.persistence.*;
-import common.TransactionTable;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @NamedQueries(@NamedQuery(name = "Company.findAll", query = "SELECT c FROM Company c"))
-public class Company implements TransactionTable {
+public class Company implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id

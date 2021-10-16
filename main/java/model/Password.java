@@ -1,12 +1,12 @@
 package model;
 
 import javax.persistence.*;
-import common.TransactionTable;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @NamedQueries(@NamedQuery(name = "Password.findAll", query = "SELECT p FROM Password p"))
-public class Password implements TransactionTable {
+public class Password implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id

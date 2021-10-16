@@ -2,15 +2,11 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import common.MasterTable;
 import java.util.List;
 
 @Entity
-@NamedQueries({
-  @NamedQuery(name = "State.findAll", query = "SELECT s FROM State s"), 
-  @NamedQuery(name = "State.findActiveAll", query = "SELECT s FROM State s WHERE s.isactive=true")
-})
-public class State implements MasterTable, Serializable {
+@NamedQueries({@NamedQuery(name = "State.findAll", query = "SELECT s FROM State s"), @NamedQuery(name = "State.findActiveAll", query = "SELECT s FROM State s WHERE s.isactive=true")})
+public class State implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
