@@ -11,9 +11,9 @@ create table state(
 	primary key(code)
 );
 
--- insert into state(code, name, isactive) values('ACTI', 'Active', 1);
--- insert into state(code, name, isactive) values('DELE', 'Deleted', 1);
--- insert into state(code, name, isactive) values('USED', 'Used', 1);
+insert into state(code, name, isactive) values('ACTI', 'Active', 1);
+insert into state(code, name, isactive) values('DELE', 'Deleted', 1);
+insert into state(code, name, isactive) values('USED', 'Used', 1);
 
 create table type(
 	code char(4) not null,
@@ -22,8 +22,8 @@ create table type(
 	
 	primary key(code)
 );
--- insert into type(code, name, isactive) values('REGI', 'Registration', 1);
--- insert into type(code, name, isactive) values('PSSW', 'Password', 1);
+insert into type(code, name, isactive) values('REGI', 'Registration', 1);
+insert into type(code, name, isactive) values('PSSW', 'Password', 1);
 
 -- drop table company;
 create table company(
@@ -96,7 +96,7 @@ create table menu(
 );
 
 -- group
-create table `group` (
+create table groupteam (
 	idx int not null auto_increment,
 	name nvarchar(255) not null,
 	company int not null,
