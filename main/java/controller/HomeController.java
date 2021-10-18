@@ -53,7 +53,7 @@ public class HomeController extends AbstractController {
   @Qualifier("StateDao")
   private StateDao stateDao;
 
-  @RequestMapping(value = "/index.html")
+  @RequestMapping(value = {"/", "/index.html"})
   public String index(ModelMap modelmap, HttpSession session, HttpServletRequest req, HttpServletResponse res) {
     var user = (User) session.getAttribute(SessionName.USER);
     modelmap.addAttribute("profileImage", Util.convertToBase64FromByte(user.getImg()));
